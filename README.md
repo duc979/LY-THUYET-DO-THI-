@@ -1,5 +1,5 @@
 # LY-THUYET-DO-THI-
 NHOM 3:
-- Dương Khánh Kỳ (LEADER)
-- Ngô Quang Đức
+- Ngô Quang Đức (LEADER)
+- Dương Khánh Kỳ
 - Nguyễn Hồ An Minh
