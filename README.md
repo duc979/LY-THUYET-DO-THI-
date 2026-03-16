@@ -14,8 +14,8 @@ Lộ trình học **Graph Algorithms** từ cơ bản → nâng cao.
 
 Những kiến thức nền tảng trước khi học thuật toán.
 
-- 1. Khái niệm cơ bản về đồ thị
-- 2. Biểu diễn đồ thị trong máy tính
+- 1. [Khái niệm cơ bản về đồ thị]
+- 2. [Biểu diễn đồ thị trong máy tính]
 
 ---
 
@@ -23,10 +23,10 @@ Những kiến thức nền tảng trước khi học thuật toán.
 
 Các thuật toán đi qua các đỉnh của đồ thị.
 
-- 3. BFS
-- 4. Ứng dụng của BFS
-- 5. DFS
-- 6. Các tính chất quan trọng của DFS
+- [3. BFS]
+- [4. Ứng dụng của BFS]
+- [5. DFS]
+- [6. Các tính chất quan trọng của DFS]
 
 ---
 
