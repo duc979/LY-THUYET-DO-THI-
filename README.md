@@ -1,5 +1,5 @@
-## LÝ THUYẾT ĐỒ THỊ
-# NHÓM 3
+# LÝ THUYẾT ĐỒ THỊ
+## NHÓM 3
 - Ngô Quang Đức (LEADER)
 - Dương Khánh Kỳ
 - Nguyễn Hồ An Minh
