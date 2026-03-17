@@ -35,7 +35,7 @@ Các thuật toán đi qua các đỉnh của đồ thị.
 Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 - [7. Thành phần liên thông](ThanhPhanLienThong.pdf)
-- [8. Phát hiện chu trình]
+- [8. Phát hiện chu trình](PhatHienChuTrinh.pdf)
 
 ---
 
