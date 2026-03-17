@@ -1,0 +1,240 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{tablehead}{RGB}{255,140,0}
+\definecolor{tableheadtxt}{RGB}{255,255,255}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code style
+\lstset{
+ basicstyle=\ttfamily\small,
+ backgroundcolor=\color{codebg},
+ keywordstyle=\color{myblue}\bfseries,
+ commentstyle=\color{mygreen}\itshape,
+ stringstyle=\color{mypurple},
+ identifierstyle=\color{codeid},
+ breaklines=true,
+ showstringspaces=false,
+ frame=single,
+ rulecolor=\color{gray!40}
+}
+
+\title{\hlred{Phát hiện chu trình trong đồ thị}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% 1 Definition
+\begin{frame}{\hlwhite{Khái niệm chu trình}}
+\begin{block}{\hlgreen{Định nghĩa}}
+Một \hlblue{chu trình} là đường đi:
+\begin{itemize}
+\item Bắt đầu và kết thúc tại cùng một đỉnh
+\item Không lặp cạnh (và thường không lặp đỉnh)
+\end{itemize}
+\end{block}
+
+\medskip
+\[
+\hlpurple{v_1 \rightarrow v_2 \rightarrow ... \rightarrow v_1}
+\]
+
+\end{frame}
+
+% 2 Example
+\begin{frame}{\hlwhite{Ví dụ trực quan}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1.5) {2};
+\node[v] (3) at (4,0) {3};
+
+\draw (1)--(2)--(3)--(1);
+
+\node at (2,-1.5) {\hlred{Có chu trình}};
+\end{tikzpicture}
+\end{frame}
+
+% 3 Idea
+\begin{frame}{\hlwhite{Ý tưởng phát hiện chu trình}}
+\begin{itemize}
+\item Dùng \hlblue{DFS}
+\item Khi duyệt cạnh (u, v):
+\begin{itemize}
+\item Nếu v chưa thăm → tiếp tục DFS
+\item Nếu v đã thăm và \hlred{v != cha của u} → có chu trình
+\end{itemize}
+\end{itemize}
+
+\medskip
+\textbf{Lưu ý:}
+\begin{itemize}
+\item Đồ thị vô hướng cần kiểm tra cha
+\item Đồ thị có hướng dùng trạng thái (visited, in-stack)
+\end{itemize}
+\end{frame}
+
+% 4 Animation
+\begin{frame}{\hlwhite{Minh họa DFS}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=mygreen,fill=mygreen!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1.5) {2};
+\node[v] (3) at (4,0) {3};
+
+\draw (1)--(2)--(3)--(1);
+
+\only<1>{
+\node at (2,-2) {\hlcyan{Bắt đầu từ 1}};
+}
+
+\only<2>{
+\fill[mycyan!80] (1) circle(0.3);
+\node at (1) {1};
+\node at (2,-2) {Visited: 1};
+}
+
+\only<3>{
+\fill[mycyan!80] (1) circle(0.3);
+\node at (1) {1};
+\fill[mycyan!80] (2) circle(0.3);
+\node at (2) {2};
+\node at (2,-2) {Visited: 1,2};
+}
+
+\only<4>{
+\fill[mycyan!80] (1) circle(0.3);
+\node at (1) {1};
+\fill[mycyan!80] (2) circle(0.3);
+\node at (2) {2};
+\fill[mycyan!80] (3) circle(0.3);
+\node at (3) {3};
+\node at (2,-2) {\hlred{Đã phát hiện chu trình!}};
+}
+
+\end{tikzpicture}
+\end{frame}
+
+% 5 DFS Code
+\begin{frame}[fragile]{\hlwhite{Code DFS (vô hướng)}}
+\begin{lstlisting}[language=C++]
+vector<int> adj[N];
+bool vis[N];
+
+bool dfs(int u, int parent){
+  vis[u]=true;
+  for(int v: adj[u]){
+    if(!vis[v]){
+      if(dfs(v,u)) return true;
+    }
+    else if(v!=parent){
+      return true;
+    }
+  }
+  return false;
+}
+\end{lstlisting}
+\end{frame}
+
+% 6 Directed Graph
+\begin{frame}[fragile]{\hlwhite{Code (có hướng)}}
+\begin{lstlisting}[language=C++]
+bool vis[N], instack[N];
+
+bool dfs(int u){
+  vis[u]=instack[u]=true;
+  for(int v: adj[u]){
+    if(!vis[v] && dfs(v)) return true;
+    else if(instack[v]) return true;
+  }
+  instack[u]=false;
+  return false;
+}
+\end{lstlisting}
+\end{frame}
+
+% 7 Complexity
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item DFS: \(\hlblue{O(V+E)}\)
+\end{itemize}
+
+\medskip
+\[
+\hlpurple{O(V+E)}
+\]
+\end{frame}
+
+% 8 Applications
+\begin{frame}{\hlwhite{Ứng dụng}}
+\begin{itemize}
+\item Kiểm tra đồ thị có chu trình
+\item Kiểm tra DAG
+\item Phát hiện lỗi phụ thuộc (dependency)
+\item Topological sort
+\end{itemize}
+\end{frame}
+
+% 9 Exercises
+\begin{frame}{\hlwhite{Bài tập}}
+\begin{enumerate}
+\item Kiểm tra đồ thị có chu trình không
+\item In ra một chu trình
+\item Tìm chu trình ngắn nhất
+\end{enumerate}
+\end{frame}
+
+% 10 End
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Chu trình là khái niệm quan trọng
+\item DFS là công cụ chính
+\end{itemize}
+
+\bigskip
+\centerline{\hlorange{Cảm ơn!}}
+\end{frame}
+
+\end{document}
