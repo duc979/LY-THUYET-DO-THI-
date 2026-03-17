@@ -1,0 +1,263 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{tablehead}{RGB}{255,140,0}
+\definecolor{tableheadtxt}{RGB}{255,255,255}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+
+% code style
+\lstset{
+ basicstyle=\ttfamily\small,
+ backgroundcolor=\color{codebg},
+ keywordstyle=\color{myblue}\bfseries,
+ commentstyle=\color{mygreen}\itshape,
+ stringstyle=\color{mypurple},
+ identifierstyle=\color{codeid},
+ breaklines=true,
+ showstringspaces=false,
+ frame=single,
+ rulecolor=\color{gray!40}
+}
+
+\title{\hlred{Thành phần liên thông}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% 1 Definition
+\begin{frame}{\hlwhite{Khái niệm thành phần liên thông}}
+\begin{block}{\hlgreen{Định nghĩa}}
+Một \hlblue{thành phần liên thông} là tập các đỉnh sao cho:
+\begin{itemize}
+\item Mọi cặp đỉnh đều \hlred{có đường đi} tới nhau
+\item Không thể thêm đỉnh khác vào mà vẫn giữ tính chất trên
+\end{itemize}
+\end{block}
+
+\medskip
+\[
+\hlpurple{G} = (\hlblue{V}, \hlred{E})
+\]
+
+\end{frame}
+
+% 2 Example
+\begin{frame}{\hlwhite{Ví dụ trực quan}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (1.5,1) {2};
+\node[v] (3) at (3,0) {3};
+
+\node[v] (4) at (5,0) {4};
+\node[v] (5) at (6.5,1) {5};
+
+\draw (1)--(2)--(3);
+\draw (4)--(5);
+
+\node at (1.5,-1.5) {\hlgreen{TP 1}};
+\node at (5.5,-1.5) {\hlred{TP 2}};
+\end{tikzpicture}
+\end{frame}
+
+% 3 Idea
+\begin{frame}{\hlwhite{Ý tưởng tìm thành phần liên thông}}
+\begin{itemize}
+\item Duyệt toàn bộ các đỉnh
+\item Nếu đỉnh chưa thăm:
+\begin{itemize}
+\item Chạy \hlblue{DFS/BFS}
+\item Đánh dấu toàn bộ đỉnh cùng thành phần
+\end{itemize}
+\end{itemize}
+
+\medskip
+\textbf{Kết quả:}
+\begin{itemize}
+\item Số lần gọi DFS = số thành phần liên thông
+\end{itemize}
+\end{frame}
+
+% 4 Animation
+\begin{frame}{\hlwhile{Minh họa từng bước}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=mygreen,fill=mygreen!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (1.5,1) {2};
+\node[v] (3) at (3,0) {3};
+
+\node[v] (4) at (5,0) {4};
+\node[v] (5) at (6.5,1) {5};
+
+\draw (1)--(2)--(3);
+\draw (4)--(5);
+
+\only<1>{\node at (3,-2) {\hlcyan{Bắt đầu từ 1}};}
+
+\only<2>{
+\fill[mycyan!80] (1) circle(0.3);
+\node at (1) {1};
+\node at (3,-2) {Visited: 1};
+}
+
+\only<3>{
+\fill[mycyan!80] (1) circle(0.3);
+\node at (1) {1};
+\fill[mycyan!80] (2) circle(0.3);
+\node at (2) {2};
+\fill[mycyan!80] (3) circle(0.3);
+\node at (3) {3};
+\node at (3,-2) {\hlgreen{Hoàn thành TP1}};
+}
+
+\only<4>{
+\fill[myorange!80] (4) circle(0.3);
+\node at (4) {4};
+\node at (3,-2) {Visited: 4};
+}
+
+\only<5>{
+\fill[myorange!80] (4) circle(0.3);
+\node at (4) {4};
+\fill[myorange!80] (5) circle(0.3);
+\node at (5) {5};
+\node at (3,-2) {\hlred{Hoàn thành TP2}};
+}
+
+\end{tikzpicture}
+\end{frame}
+
+% 5 Code DFS
+\begin{frame}[fragile]{\hlwhile{Code DFS}}
+\begin{lstlisting}[language=C++]
+vector<int> adj[N];
+bool vis[N];
+
+void dfs(int u){
+  vis[u]=true;
+  for(int v: adj[u]){
+    if(!vis[v]) dfs(v);
+  }
+}
+
+int count_cc(int n){
+  int cnt=0;
+  for(int i=1;i<=n;i++){
+    if(!vis[i]){
+      dfs(i);
+      cnt++;
+    }
+  }
+  return cnt;
+}
+\end{lstlisting}
+\end{frame}
+
+% 6 BFS version
+\begin{frame}[fragile]{\hlwhite{Code BFS}}
+\begin{lstlisting}[language=C++]
+void bfs(int s){
+  queue<int> q;
+  q.push(s);
+  vis[s]=true;
+
+  while(!q.empty()){
+    int u=q.front(); q.pop();
+    for(int v: adj[u]){
+      if(!vis[v]){
+        vis[v]=true;
+        q.push(v);
+      }
+    }
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+% 7 Complexity
+\begin{frame}{\htwhite{Độ phức tạp}}
+\begin{itemize}
+\item DFS: \(\hlblue{O(V+E)}\)
+\item BFS: \(\hlgreen{O(V+E)}\)
+\end{itemize}
+
+\medskip
+\textbf{Tổng thể:}
+\[
+\hlpurple{O(V+E)}
+\]
+
+\end{frame}
+
+% 8 Applications
+\begin{frame}{\hlwhite{Ứng dụng}}
+\begin{itemize}
+\item Kiểm tra đồ thị có liên thông không
+\item Đếm số nhóm (network, social)
+\item Bài toán mê cung
+\item Flood fill (ảnh)
+\end{itemize}
+\end{frame}
+
+% 9 Exercises
+\begin{frame}{\htwhite{Bài tập}}
+\begin{enumerate}
+\item Đếm số thành phần liên thông
+\item In ra từng thành phần
+\item Kiểm tra đồ thị có liên thông không
+\end{enumerate}
+\end{frame}
+
+% 10 End
+\begin{frame}{\htwhite{Kết luận}}
+\begin{itemize}
+\item Thành phần liên thông là nền tảng đồ thị
+\item Dễ cài đặt bằng DFS/BFS
+\end{itemize}
+
+\bigskip
+\centerline{\hlorange{Cảm ơn!}}
+\end{frame}
+
+\end{document}
