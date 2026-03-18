@@ -1,9 +1,9 @@
 # LÝ THUYẾT ĐỒ THỊ
 ## NHÓM 3
-- Ngô Quang Đức (LEADER)
+- Ngô Quang Đức 
 - Dương Khánh Kỳ 
-- Nguyễn Hồ An Minh
-
+- Nguyễn Hồ An Minh (LEADER)
+- 
 # 📚 ROADMAP
 
 Lộ trình học **Graph Algorithms** từ cơ bản → nâng cao.
@@ -42,7 +42,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
 
 - [9. DAG (Directed Acyclic Graph)](DAG.pdf)
-- [10. Sắp xếp topo]
+- [10. Sắp xếp topo](TOPOLOGICALSORT.pdf)
 - [11. SCC (Strongly Connected Components)]
 
 ---
