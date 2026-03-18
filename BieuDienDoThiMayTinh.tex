@@ -1,0 +1,135 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+
+
+\title{Biểu Diễn Đồ Thị Trong Máy Tính}
+\author{NHÓM 3}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Khái niệm cơ bản}
+Đồ thị là tập hợp các điểm biểu diễn mối quan hệ giữa các đại lượng. 
+Ví dụ, hàm số:
+\[
+y = x^2
+\]
+sẽ tạo thành một đường cong parabol.
+
+Máy tính biểu diễn đồ thị bằng cách:
+\begin{itemize}
+    \item Tính nhiều giá trị $(x, y)$
+    \item Biểu diễn các điểm này trên màn hình
+    \item Nối các điểm lại để tạo thành đường
+\end{itemize}
+
+\section{Cách máy tính biểu diễn đồ thị}
+
+\subsection*{Bước 1: Chọn hệ trục tọa độ}
+\begin{itemize}
+    \item Trục hoành (Ox)
+    \item Trục tung (Oy)
+\end{itemize}
+
+\subsection*{Bước 2: Lấy mẫu dữ liệu}
+Chọn các giá trị của $x$ và tính:
+\[
+y = f(x)
+\]
+
+\subsection*{Bước 3: Vẽ điểm}
+Mỗi cặp $(x, y)$ được biểu diễn bằng một điểm trên màn hình.
+
+\subsection*{Bước 4: Nối các điểm}
+Các điểm được nối lại để tạo thành đồ thị liên tục.
+
+\section{Ví dụ minh họa}
+
+Xét hàm số:
+\[
+y = x^2
+\]
+
+Bảng giá trị:
+
+\[
+\begin{array}{|c|c|}
+\hline
+x & y \\
+\hline
+-2 & 4 \\
+-1 & 1 \\
+0 & 0 \\
+1 & 1 \\
+2 & 4 \\
+\hline
+\end{array}
+\]
+
+Các điểm này được nối lại tạo thành một đường cong parabol.
+
+\section{Các dạng đồ thị thường gặp}
+\begin{itemize}
+    \item Đồ thị hàm số (đường thẳng, parabol,...)
+    \item Biểu đồ cột
+    \item Biểu đồ đường
+    \item Biểu đồ tròn
+\end{itemize}
+
+\section{Công cụ vẽ đồ thị}
+\begin{itemize}
+    \item Phần mềm: GeoGebra, Desmos
+    \item Ngôn ngữ lập trình: Python, C++, Java
+\end{itemize}
+
+\section{Ứng dụng}
+\begin{itemize}
+    \item Học toán và trực quan hóa dữ liệu
+    \item Phân tích dữ liệu
+    \item Thiết kế đồ họa, game
+    \item Khoa học và kỹ thuật
+\end{itemize}
+
+\end{document}
