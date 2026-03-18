@@ -1,0 +1,288 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+% --- box đẹp ---
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% --- code đẹp ---
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+% --- title đẹp ---
+\setbeamertemplate{title page}
+{
+\centering
+\vspace{2cm}
+{\usebeamerfont{title}\color{myred}\inserttitle\par}
+\vspace{1cm}
+{\usebeamerfont{author}\insertauthor\par}
+\vspace{0.5cm}
+{\usebeamerfont{date}\insertdate\par}
+}
+
+\title{\hlred{DAG - Directed Acyclic Graph}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== LÝ THUYẾT =====================
+
+\begin{frame}{\hlwhite{Định nghĩa DAG}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Khái niệm DAG}}]
+\hlblue{DAG} là đồ thị:
+\begin{itemize}
+\item Có hướng
+\item Không chứa chu trình
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{$v \rightarrow ... \rightarrow v$ không tồn tại}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{\hlwhite{Bản chất của DAG}}
+\begin{itemize}
+\item Không có chu trình $\rightarrow$ không quay lại điểm ban đầu
+\item Quan hệ giữa các đỉnh:
+\begin{itemize}
+\item \hlblue{Thứ tự}
+\item \hlblue{Phụ thuộc}
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{DAG $\Rightarrow$ có thứ tự tuyến tính}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}{\hlwhite{Định lý quan trọng}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Định lý}}]
+Đồ thị là DAG \hlred{khi và chỉ khi} có thể topo sort
+\end{tcolorbox}
+
+\begin{itemize}
+\item Topo thành công $\Rightarrow$ DAG
+\item Thất bại $\Rightarrow$ có chu trình
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\hlwhite{Tính chất}}
+\begin{itemize}
+\item Luôn tồn tại đỉnh:
+\begin{itemize}
+\item \hlblue{in-degree = 0}
+\item \hlgreen{out-degree = 0}
+\end{itemize}
+\item Không có chu trình
+\item Không lặp vô hạn
+\end{itemize}
+\end{frame}
+
+% ===================== MINH HỌA =====================
+
+\begin{frame}{\hlwhite{Ví dụ DAG}}
+\centering
+\begin{tikzpicture}
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1.5) {2};
+\node[v] (3) at (4,0) {3};
+\node[v] (4) at (6,1.5) {4};
+
+\draw[->] (1)--(2);
+\draw[->] (1)--(3);
+\draw[->] (2)--(4);
+\draw[->] (3)--(4);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{\hlwhite{Không phải DAG}}
+\centering
+\begin{tikzpicture}
+\tikzset{v/.style={circle,draw=myred,fill=myred!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1.5) {2};
+\node[v] (3) at (4,0) {3};
+
+\draw[->] (1)--(2);
+\draw[->] (2)--(3);
+\draw[->] (3)--(1);
+\end{tikzpicture}
+\end{frame}
+
+% ===================== TOPO =====================
+
+\begin{frame}{\hlwhite{Topological Sort}}
+\begin{tcolorbox}
+\centering
+\hlblue{$u \rightarrow v \Rightarrow u$ đứng trước $v$}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Là thứ tự hợp lệ
+\item Chỉ tồn tại với DAG
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Topo Sort (Kahn)}}
+\begin{lstlisting}[language=C++]
+queue<int> q;
+for(int i=1;i<=n;i++)
+if(indegree[i]==0) q.push(i);
+
+while(!q.empty()){
+ int u=q.front(); q.pop();
+ for(int v: adj[u]){
+  indegree[v]--;
+  if(indegree[v]==0) q.push(v);
+ }
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== DFS =====================
+
+\begin{frame}[fragile]{\hlwhite{DFS + Detect Cycle}}
+\begin{lstlisting}[language=C++]
+int vis[N];
+
+void dfs(int u){
+ vis[u]=1;
+ for(int v: adj[u]){
+  if(vis[v]==0) dfs(v);
+  else if(vis[v]==1) cycle=true;
+ }
+ vis[u]=2;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== DP =====================
+
+\begin{frame}{\hlwhite{DAG và Quy hoạch động}}
+\begin{tcolorbox}
+\centering
+\hlpurple{$dp[v] = \max(dp[u] + 1)$}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Tính theo topo
+\item Không bị lặp vô hạn
+\end{itemize}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh Graph và DAG}}
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|m{3cm}|m{4cm}|m{4cm}|}
+\hline
+\rowcolor{myblue!70}
+\textcolor{white}{\textbf{Tiêu chí}} &
+\textcolor{white}{\textbf{Graph thường}} &
+\textcolor{white}{\textbf{DAG}} \\
+\hline
+
+Chu trình & Có thể có & \hlgreen{Không có} \\
+\hline
+
+Topological Sort & Không phải lúc nào cũng có & \hlgreen{Luôn tồn tại} \\
+\hline
+
+Quy hoạch động & Khó áp dụng & \hlgreen{Dễ áp dụng} \\
+\hline
+
+Ứng dụng & Chung chung & \hlgreen{Phụ thuộc, thứ tự} \\
+\hline
+
+\end{tabular}
+\end{frame}
+
+% ===================== ỨNG DỤNG =====================
+
+\begin{frame}{\hlwhite{Ứng dụng}}
+\begin{itemize}
+\item Lập lịch công việc
+\item Course prerequisite
+\item Dependency graph
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item DAG = không chu trình
+\item Topo sort là cốt lõi
+\item Rất quan trọng trong thực tế
+\end{itemize}
+
+\centerline{\hlorange{Cảm ơn!}}
+\end{frame}
+
+\end{document}
