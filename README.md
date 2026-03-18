@@ -55,7 +55,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 # 6. Cây và cây khung (Trees & MST)
 
-- [13. Cây, cây khung, MST]
+- [13. Cây, cây khung, MST](CayCayKhungMST.pdf)
 - [14. Tính chất tham lam của MST]
 - [15. DSU (Disjoint Set Union)]
 - [16. Kruskal]
