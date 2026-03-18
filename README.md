@@ -43,7 +43,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 - [9. DAG (Directed Acyclic Graph)](DAG.pdf)
 - [10. Sắp xếp topo](TopologicalSort.pdf)
-- [11. SCC (Strongly Connected Components)]
+- [11. SCC (Strongly Connected Components)](SCC.pdf)
 
 ---
 
