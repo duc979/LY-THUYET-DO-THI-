@@ -1,0 +1,621 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% màu chủ đạo
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{0,255,0}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,139,139}
+\definecolor{softbg}{RGB}{248,250,252}
+\definecolor{softline}{RGB}{210,220,235}
+
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{itemize item}{fg=myblue}
+\setbeamercolor{itemize subitem}{fg=mygreen}
+\setbeamercolor{itemize subsubitem}{fg=myorange}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{title}{series=\bfseries}
+
+\tcbset{
+colback=blue!4,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt,
+left=1.2mm,
+right=1.2mm,
+top=1.0mm,
+bottom=1.0mm
+}
+
+% nhấn mạnh
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% listings
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{softbg},
+frame=single,
+rulecolor=\color{softline},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen},
+stringstyle=\color{myorange},
+showstringspaces=false,
+tabsize=2,
+columns=fullflexible,
+breaklines=true
+}
+
+% title page
+\setbeamertemplate{title page}{
+\centering
+\vspace{2cm}
+{\usebeamerfont{title}\color{white}\inserttitle\par}
+\vspace{1cm}
+{\usebeamerfont{author}\insertauthor\par}
+\vspace{0.5cm}
+{\usebeamerfont{date}\insertdate\par}
+}
+
+\title{\hlred{DSU (gộp tập rời nhau)}}
+\author{Nhóm 3}
+\date{\hlcyan{03/2026}}
+
+\IfFileExists{background.png}{
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.28] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+}{}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% -------------------- mở đầu --------------------
+
+\begin{frame}{\hlwhite{DSU là gì?}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Khái niệm}}]
+\hlblue{DSU} là viết tắt của \hlpurple{Disjoint Set Union}, còn gọi là \hlpurple{Union-Find}. Đây là cấu trúc dữ liệu dùng để quản lý các tập hợp \hlred{rời nhau}.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Mỗi phần tử thuộc đúng \hlblue{một tập}.
+  \item Có thể kiểm tra hai phần tử có cùng tập hay không.
+  \item Có thể gộp hai tập lại thành một tập mới.
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlorange{DSU rất hữu ích khi xử lý thành phần liên thông và các thao tác gộp nhóm}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ý tưởng --------------------
+
+\begin{frame}{\hlwhite{Ý tưởng trực quan}}
+\begin{itemize}
+  \item Ban đầu, mỗi đỉnh là một tập riêng biệt.
+  \item Khi có quan hệ mới giữa hai đỉnh, ta có thể cần gộp hai tập của chúng.
+  \item Nếu hai đỉnh đã ở cùng một tập, việc gộp lại là không cần thiết.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Mục tiêu}}]
+DSU giúp duy trì các tập rời nhau một cách nhanh chóng, thay vì phải quét lại toàn bộ cấu trúc sau mỗi thao tác.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ứng dụng --------------------
+
+\begin{frame}{\hlwhite{DSU dùng để làm gì?}}
+\begin{itemize}
+  \item Quản lý \hlblue{thành phần liên thông} khi thêm cạnh.
+  \item Kiểm tra xem hai đỉnh có đang cùng một nhóm hay không.
+  \item Phát hiện việc nối thêm một cạnh có tạo ra chu trình trong đồ thị vô hướng hay không.
+  \item Giải các bài toán gộp nhóm theo kiểu động.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlred{DSU là một trong những cấu trúc dữ liệu cơ bản nhất khi làm việc với đồ thị}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- cấu trúc --------------------
+
+\begin{frame}{\hlwhite{Cấu trúc lưu trữ trong DSU}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Hai mảng quan trọng}}]
+\begin{itemize}
+  \item \hlblue{\texttt{parent[x]}}: cha của đỉnh \texttt{x} trong cây đại diện.
+  \item \hlblue{\texttt{sz[x]}} hoặc \hlblue{\texttt{rank[x]}}: kích thước hoặc độ cao tương đối của cây.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Nếu \hlred{\texttt{parent[x] = x}} thì \texttt{x} là \hlred{gốc}.
+  \item Mỗi tập được biểu diễn bởi một cây.
+  \item Gốc của cây là đại diện của cả tập.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlorange{Mỗi phần tử chỉ cần biết cha trực tiếp của nó}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ví dụ ban đầu --------------------
+
+\begin{frame}{\hlwhite{Ví dụ ban đầu}}
+\centering
+\begin{tikzpicture}[
+node distance=1.3cm,
+v/.style={circle,draw=myblue,fill=myblue!12,minimum size=8mm,thick},
+g/.style={draw=mygreen,rounded corners=2mm,thick,minimum width=12mm,minimum height=8mm}
+]
+\node[v] (1) {1};
+\node[v, right=of 1] (2) {2};
+\node[v, right=of 2] (3) {3};
+\node[v, right=of 3] (4) {4};
+\node[v, right=of 4] (5) {5};
+\node[v, right=of 5] (6) {6};
+
+\node[g, fit=(1)] {};
+\node[g, fit=(2)] {};
+\node[g, fit=(3)] {};
+\node[g, fit=(4)] {};
+\node[g, fit=(5)] {};
+\node[g, fit=(6)] {};
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\hlpurple{Ban đầu, mỗi đỉnh là một tập riêng: \(\{1\}, \{2\}, \{3\}, \{4\}, \{5\}, \{6\}\).}
+\end{frame}
+
+% -------------------- khởi tạo --------------------
+
+\begin{frame}{\hlwhite{Khởi tạo}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Ý nghĩa}}]
+Mỗi phần tử bắt đầu là một tập riêng, nên:
+\[
+\texttt{parent[x] = x}, \qquad \texttt{sz[x] = 1}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Không có phần tử nào nằm dưới phần tử khác.
+  \item Mỗi cây lúc đầu chỉ có một nút.
+  \item Đây là trạng thái khởi đầu chuẩn của DSU.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlblue{Khởi tạo đúng là nền tảng để hai thao tác tìm gốc và gộp tập hoạt động chuẩn}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- find --------------------
+
+\begin{frame}{\hlwhite{Hàm \texttt{find(x)}}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Mục đích}}]
+\texttt{find(x)} trả về \hlred{đại diện của tập} chứa phần tử \texttt{x}.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Nếu \texttt{x} là gốc thì \texttt{find(x) = x}.
+  \item Nếu chưa phải gốc, ta đi lên cha của nó cho đến khi gặp gốc.
+  \item Kết quả cuối cùng là đại diện của toàn bộ tập chứa \texttt{x}.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Trực giác}}]
+\hlblue{Tìm gốc} giống như lần theo các mũi tên trong một cây để tìm ra người đứng đầu.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- nén đường đi --------------------
+
+\begin{frame}{\hlwhite{Tối ưu hàm \texttt{find(x)}: nén đường đi}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Nén đường đi}}]
+Sau khi tìm được gốc, ta \hlred{cho các đỉnh trên đường đi trỏ thẳng về gốc}. Điều này làm cho các lần truy vấn sau nhanh hơn rất nhiều.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Lần đầu có thể đi qua nhiều đỉnh.
+  \item Sau khi nén đường đi, cây trở nên phẳng hơn.
+  \item Đây là một trong hai tối ưu quan trọng nhất của DSU.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlorange{Nén đường đi giúp DSU chạy rất nhanh trong thực tế}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- minh họa nén đường đi --------------------
+
+\begin{frame}{\hlwhite{Ví dụ nén đường đi}}
+\centering
+\begin{tikzpicture}[
+node distance=0.2cm,
+v/.style={circle,draw=myblue,fill=myblue!12,minimum size=8mm,thick},
+root/.style={circle,draw=myred,fill=myred!12,minimum size=9mm,thick}
+]
+\node[root] (1) {1};
+\node[v, below=of 1] (2) {2};
+\node[v, below=of 2] (3) {3};
+\node[v, below=of 3] (4) {4};
+\node[v, below=of 4] (5) {5};
+
+\draw[->, thick] (2) -- (1);
+\draw[->, thick] (3) -- (2);
+\draw[->, thick] (4) -- (3);
+\draw[->, thick] (5) -- (4);
+\end{tikzpicture}
+
+\vspace{0.2cm}
+\hlpurple{Trước khi nén, muốn tìm gốc của 5 ta phải đi qua 4, 3, 2, 1.}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Sau khi gọi \texttt{find(5)}}}]
+Các đỉnh trên đường đi có thể được cập nhật để trỏ trực tiếp về gốc 1.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- union --------------------
+
+\begin{frame}{\hlwhite{Hàm \texttt{union(a,b)}}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Mục đích}}]
+\texttt{union(a,b)} gộp hai tập chứa \texttt{a} và \texttt{b} lại với nhau.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Tìm đại diện của hai tập: \(\,u = \texttt{find(a)}\), \(\,v = \texttt{find(b)}\).
+  \item Nếu \(u = v\) thì hai phần tử đã cùng một tập.
+  \item Nếu khác nhau, nối một gốc vào gốc còn lại.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Nguyên tắc}}]
+Không nối tùy ý, mà nên nối cây nhỏ vào cây lớn để giảm độ cao của cấu trúc.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- union by size/rank --------------------
+
+\begin{frame}{\hlwhite{Tối ưu \texttt{union}: gộp theo kích thước hoặc hạng}}
+\begin{itemize}
+  \item \hlblue{Gộp theo kích thước}: luôn nối cây nhỏ hơn vào cây lớn hơn.
+  \item \hlgreen{Gộp theo hạng}: luôn nối cây có độ cao thấp hơn vào cây cao hơn.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Lợi ích}}]
+Hai kỹ thuật này giúp cây không bị lệch quá nhiều, từ đó giữ cho DSU rất nhanh.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\centering
+\hlred{Kết hợp nén đường đi + gộp theo kích thước/hạng là chuẩn tối ưu của DSU}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- minh họa union --------------------
+
+\begin{frame}{\hlwhite{Minh họa gộp hai tập}}
+\centering
+\begin{tikzpicture}[
+node distance=1.2cm,
+v/.style={circle,draw=myblue,fill=myblue!12,minimum size=8mm,thick},
+root/.style={circle,draw=myred,fill=myred!12,minimum size=9mm,thick}
+]
+\node[root] (1) {1};
+\node[v, below left=of 1] (2) {2};
+\node[v, below right=of 1] (3) {3};
+
+\node[root, right=4.0cm of 1] (4) {4};
+\node[v, below left=of 4] (5) {5};
+\node[v, below right=of 4] (6) {6};
+
+\draw[->, thick] (2) -- (1);
+\draw[->, thick] (3) -- (1);
+\draw[->, thick] (5) -- (4);
+\draw[->, thick] (6) -- (4);
+\end{tikzpicture}
+
+\vspace{0.2cm}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Trạng thái trước khi gộp}}]
+Ta có hai tập: \(\{1,2,3\}\) và \(\{4,5,6\}\).
+\end{tcolorbox}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Sau khi gộp \texttt{union(1,4)}}}]
+Chỉ cần nối một gốc vào gốc còn lại, hai tập sẽ nhập thành một.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- trạng thái sau khi gộp --------------------
+
+\begin{frame}{\hlwhite{Trạng thái sau khi gộp}}
+\centering
+\begin{tikzpicture}[
+node distance=1.2cm,
+v/.style={circle,draw=myblue,fill=myblue!12,minimum size=8mm,thick},
+root/.style={circle,draw=myred,fill=myred!12,minimum size=9mm,thick}
+]
+\node[root] (1) {1};
+\node[v, below left=of 1] (2) {2};
+\node[v, below right=of 1] (3) {3};
+\node[v, right=3.6cm of 1] (4) {4};
+\node[v, below left=of 4] (5) {5};
+\node[v, below right=of 4] (6) {6};
+
+\draw[->, thick] (2) -- (1);
+\draw[->, thick] (3) -- (1);
+\draw[->, thick] (4) -- (1);
+\draw[->, thick] (5) -- (4);
+\draw[->, thick] (6) -- (4);
+\end{tikzpicture}
+
+\vspace{0.2cm}
+\begin{itemize}
+  \item Gốc của tập mới là \hlred{1}.
+  \item Các phần tử \hlgreen{2,3,4,5,6} đều thuộc cùng một thành phần theo DSU.
+\end{itemize}
+\end{frame}
+
+% -------------------- bảng parent --------------------
+
+\begin{frame}{\hlwhite{Ví dụ mảng \texttt{parent} và \texttt{sz}}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Giả sử}}]
+Ta có 6 đỉnh, sau một số lần gộp:
+\end{tcolorbox}
+
+\begin{center}
+\begin{tabular}{c|cccccc}
+\toprule
+\hlblue{\texttt{x}} & 1 & 2 & 3 & 4 & 5 & 6 \\
+\midrule
+\hlblue{\texttt{parent[x]}} & 1 & 1 & 1 & 4 & 4 & 4 \\
+\hlblue{\texttt{sz[x]}} & 3 & - & - & 3 & - & - \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\pause
+
+\begin{itemize}
+  \item Tập thứ nhất có gốc \hlred{1}, gồm \(\{1,2,3\}\).
+  \item Tập thứ hai có gốc \hlred{4}, gồm \(\{4,5,6\}\).
+  \item Nếu gộp hai tập này, chỉ cần nối một gốc vào gốc kia.
+\end{itemize}
+\end{frame}
+
+% -------------------- kiểm tra cùng tập --------------------
+
+\begin{frame}{\hlwhite{Kiểm tra hai phần tử có cùng tập hay không}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Quy tắc}}]
+Hai phần tử \(a\) và \(b\) thuộc cùng một tập khi và chỉ khi:
+\[
+\texttt{find(a) = find(b)}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Nếu kết quả bằng nhau, hai đỉnh đã được nối gián tiếp với nhau.
+  \item Nếu khác nhau, chúng nằm ở hai thành phần khác nhau.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Đây là thao tác nền tảng để trả lời nhiều truy vấn trên đồ thị}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ví dụ kiểm tra --------------------
+
+\begin{frame}{\hlwhite{Ví dụ kiểm tra cùng tập}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Giả sử}}]
+Sau một số phép gộp, ta có:
+\[
+\{1,2,3\},\quad \{4,5\},\quad \{6\}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+  \item \texttt{find(2) = find(3)} \(\rightarrow\) \hlgreen{cùng tập}.
+  \item \texttt{find(2) \(\neq\) find(5)} \(\rightarrow\) \hlred{khác tập}.
+  \item \texttt{find(6) = 6} \(\rightarrow\) đỉnh 6 đang là gốc của một tập riêng.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlorange{DSU trả lời các truy vấn cùng nhóm rất nhanh}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- mã giả --------------------
+
+\begin{frame}[fragile]{\hlwhite{Mã giả DSU}}
+\begin{lstlisting}[language=C++]
+make_set(x):
+    parent[x] = x
+    sz[x] = 1
+find(x):
+    if parent[x] == x:
+        return x
+    parent[x] = find(parent[x])
+    return parent[x]
+union(a, b):
+    a = find(a)
+    b = find(b)
+    if a == b:
+        return
+    if sz[a] < sz[b]:
+        swap(a, b)
+    parent[b] = a
+    sz[a] += sz[b]
+\end{lstlisting}
+\end{frame}
+
+% -------------------- giải thích mã giả --------------------
+
+\begin{frame}{\hlwhite{Giải thích mã giả}}
+\begin{itemize}
+  \item \texttt{make\_set}: tạo một tập mới chỉ chứa một phần tử.
+  \item \texttt{find}: đi lên gốc và nén đường đi.
+  \item \texttt{union}: tìm gốc của hai tập, nếu khác nhau thì gộp lại.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}[title=\textbf{\hlgreen{Điểm quan trọng}}]
+Dòng
+\[
+\texttt{parent[x] = find(parent[x])}
+\]
+chính là bước \hlred{nén đường đi}.
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ví dụ tuần tự --------------------
+
+\begin{frame}{\hlwhite{Ví dụ tuần tự các thao tác}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Ban đầu}}]
+\[
+\{1\},\{2\},\{3\},\{4\},\{5\}
+\]
+\end{tcolorbox}
+
+\begin{enumerate}
+  \item \texttt{union(1,2)} \(\rightarrow\) \(\{1,2\},\{3\},\{4\},\{5\}\)
+  \item \texttt{union(3,4)} \(\rightarrow\) \(\{1,2\},\{3,4\},\{5\}\)
+  \item \texttt{union(2,3)} \(\rightarrow\) \(\{1,2,3,4\},\{5\}\)
+  \item \texttt{find(4)} \(\rightarrow\) trả về đại diện của tập chứa 4
+\end{enumerate}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlblue{Qua mỗi bước, số lượng tập giảm dần khi ta gộp các thành phần}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- độ phức tạp --------------------
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Khi tối ưu đầy đủ}}]
+Với \hlblue{nén đường đi} và \hlblue{gộp theo kích thước/hạng}, DSU hoạt động rất nhanh trong thực tế.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item \texttt{find}: gần như \(O(1)\) trung bình.
+  \item \texttt{union}: gần như \(O(1)\) trung bình.
+  \item Phân tích chặt hơn cho kết quả \(O(\alpha(n))\), với \(\alpha(n)\) là hàm nghịch đảo Ackermann.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Trong các bài toán thực tế, DSU gần như rất gần hằng số}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- ứng dụng --------------------
+
+\begin{frame}{\hlwhite{Ứng dụng của DSU trong lý thuyết đồ thị}}
+\begin{itemize}
+  \item Theo dõi các thành phần liên thông khi đồ thị được xây dần.
+  \item Kiểm tra một cạnh mới có làm hai đỉnh rơi vào cùng một nhóm hay không.
+  \item Phân chia các đỉnh thành các cụm rời nhau.
+  \item Giải các bài toán cần thao tác gộp nhóm liên tục.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlorange{DSU đặc biệt phù hợp khi đồ thị được xét theo kiểu thêm cạnh dần dần}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- tóm tắt --------------------
+
+\begin{frame}{\hlwhite{Tóm tắt DSU}}
+\begin{itemize}
+  \item DSU quản lý các tập rời nhau.
+  \item Có hai thao tác chính: \hlblue{tìm gốc} và \hlgreen{gộp tập}.
+  \item \hlred{Nén đường đi} và \hlpurple{gộp theo kích thước/hạng} giúp tối ưu mạnh.
+  \item DSU rất hữu ích trong các bài toán đồ thị cần gộp nhóm và kiểm tra cùng thành phần.
+\end{itemize}
+
+\pause
+
+\begin{tcolorbox}
+\centering
+\hlred{DSU là cấu trúc dữ liệu gọn, nhanh và rất quan trọng}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- kết luận --------------------
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+  \item DSU là công cụ cơ bản để quản lý các thành phần rời nhau.
+  \item Cách cài đặt đơn giản nhưng hiệu quả rất cao.
+  \item Khi học lý thuyết đồ thị, DSU là một trong những cấu trúc dữ liệu nên nắm thật chắc.
+\end{itemize}
+
+\vspace{0.2cm}
+\centerline{\hlorange{Cảm ơn!}}
+\end{frame}
+
+\end{document}
