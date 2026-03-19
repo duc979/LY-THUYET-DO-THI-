@@ -1,0 +1,249 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Shortest Path - Tổng quan}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+\hlblue{Shortest Path} là bài toán tìm đường đi:
+
+\[
+\text{từ } s \rightarrow v \text{ sao cho tổng trọng số nhỏ nhất}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Áp dụng cho \hlred{đồ thị có trọng số}
+\item Có thể là:
+\begin{itemize}
+\item Đồ thị có hướng / vô hướng
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== PHÂN LOẠI =====================
+
+\begin{frame}{\hlwhite{Phân loại}}
+\begin{itemize}
+\item Theo nguồn:
+\begin{itemize}
+\item \hlblue{Single-source} (1 đỉnh)
+\item \hlgreen{All-pairs} (mọi cặp đỉnh)
+\end{itemize}
+
+\item Theo trọng số:
+\begin{itemize}
+\item \hlpurple{Không âm}
+\item \hlred{Có âm}
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlcyan{Mỗi loại dùng thuật toán khác nhau}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Các thuật toán chính}}
+\begin{itemize}
+\item \hlblue{BFS}
+\begin{itemize}
+\item Trọng số = 1
+\end{itemize}
+
+\item \hlgreen{Dijkstra}
+\begin{itemize}
+\item Trọng số \hlgreen{$\ge 0$}
+\end{itemize}
+
+\item \hlred{Bellman-Ford}
+\begin{itemize}
+\item Có cạnh âm
+\end{itemize}
+
+\item \hlpurple{Floyd-Warshall}
+\begin{itemize}
+\item All-pairs
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh}}
+\begin{itemize}
+\item BFS:
+\[
+O(n + m)
+\]
+
+\item Dijkstra:
+\[
+O((n + m)\log n)
+\]
+
+\item Bellman-Ford:
+\[
+O(n \cdot m)
+\]
+
+\item Floyd:
+\[
+O(n^3)
+\]
+\end{itemize}
+\end{frame}
+
+% ===================== VẤN ĐỀ =====================
+
+\begin{frame}{\hlwhite{Vấn đề quan trọng}}
+\begin{itemize}
+\item \hlred{Negative Cycle}
+\begin{itemize}
+\item Làm bài toán vô nghĩa
+\end{itemize}
+
+\item \hlblue{Relaxation}
+\begin{itemize}
+\item Cập nhật khoảng cách
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Ý tưởng cốt lõi của mọi thuật toán}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== RELAX =====================
+
+\begin{frame}{\hlwhite{Relaxation}}
+\begin{tcolorbox}
+\centering
+\[
+dist[v] = \min(dist[v], dist[u] + w(u,v))
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Nếu đi qua $u$ tốt hơn → cập nhật
+\item Lặp lại nhiều lần
+\end{itemize}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Relax Core)}}
+\begin{lstlisting}[language=C++]
+if(dist[v] > dist[u] + w){
+    dist[v] = dist[u] + w;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== CHỌN THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Chọn thuật toán}}
+\begin{itemize}
+\item Trọng số = 1 → \hlblue{BFS}
+\item Không âm → \hlgreen{Dijkstra}
+\item Có âm → \hlred{Bellman-Ford}
+\item N nhỏ, all-pairs → \hlpurple{Floyd}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlcyan{Chọn đúng thuật toán = AC}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Shortest Path là nền tảng đồ thị
+\item Xuất hiện rất nhiều trong contest
+\item Cần nắm rõ điều kiện để chọn thuật toán
+\end{itemize}
+\end{frame}
+
+\end{document}
