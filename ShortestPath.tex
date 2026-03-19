@@ -1,0 +1,264 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Strongly Connected Components}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+Một \hlblue{Strongly Connected Component (SCC)} là tập các đỉnh sao cho:
+\[
+\forall u, v \Rightarrow u \leftrightarrow v
+\]
+(tồn tại đường đi từ $u \rightarrow v$ và $v \rightarrow u$)
+\end{tcolorbox}
+
+\begin{itemize}
+\item Áp dụng cho \hlred{đồ thị có hướng}
+\item Mỗi đỉnh thuộc đúng \hlgreen{1 SCC}
+\end{itemize}
+\end{frame}
+
+% ===================== BẢN CHẤT =====================
+
+\begin{frame}{\hlwhite{Bản chất}}
+\begin{itemize}
+\item Gom các đỉnh có thể đi qua lại
+\item Xử lý \hlblue{chu trình}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{SCC = nhóm các đỉnh trong cùng chu trình}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== TÍNH CHẤT =====================
+
+\begin{frame}{\hlwhite{Tính chất}}
+\begin{itemize}
+\item Gom mỗi SCC thành 1 đỉnh
+\item Thu được đồ thị mới:
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Condensation Graph là DAG}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Sau đó có thể dùng \hlblue{Topological Sort}
+\end{itemize}
+\end{frame}
+
+% ===================== MINH HỌA =====================
+
+\begin{frame}{\hlwhite{Ví dụ}}
+\centering
+\begin{tikzpicture}
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1.5) {2};
+\node[v] (3) at (4,0) {3};
+\node[v] (4) at (6,1.5) {4};
+\node[v] (5) at (8,0) {5};
+
+\draw[->] (1)--(2);
+\draw[->] (2)--(1);
+
+\draw[->] (2)--(3);
+
+\draw[->] (3)--(4);
+\draw[->] (4)--(5);
+\draw[->] (5)--(3);
+
+\node at (4,-1.5) {\hlgreen{SCC: \{1,2\}, \{3,4,5\}}};
+\end{tikzpicture}
+\end{frame}
+
+% ===================== KOSARAJU =====================
+
+\begin{frame}{\hlwhite{Thuật toán Kosaraju}}
+\begin{itemize}
+\item DFS → lưu thứ tự kết thúc
+\item Đảo chiều đồ thị
+\item DFS theo thứ tự ngược
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{2 lần DFS}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Code Kosaraju (Core)}}
+\begin{lstlisting}[language=C++]
+void dfs1(int u){
+    vis[u] = true;
+    for(int v: g[u])
+        if(!vis[v]) dfs1(v);
+    st.push(u);
+}
+
+void dfs2(int u){
+    comp.push_back(u);
+    vis[u] = true;
+    for(int v: gr[u])
+        if(!vis[v]) dfs2(v);
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== TARJAN =====================
+
+\begin{frame}{\hlwhite{Thuật toán Tarjan}}
+\begin{itemize}
+\item 1 DFS duy nhất
+\item Dùng:
+\begin{itemize}
+\item \hlblue{num[u]}: thời gian thăm
+\item \hlblue{low[u]}: giá trị nhỏ nhất
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Nhanh + tối ưu hơn}
+\end{tcolorbox}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Code Tarjan (Core)}}
+\begin{lstlisting}[language=C++]
+void dfs(int u){
+    num[u] = low[u] = ++timeDfs;
+    st.push(u);
+    inStack[u] = true;
+
+    for(int v: adj[u]){
+        if(!num[v]){
+            dfs(v);
+            low[u] = min(low[u], low[v]);
+        }
+        else if(inStack[v])
+            low[u] = min(low[u], num[v]);
+    }
+
+    if(low[u] == num[u]){
+        while(true){
+            int v = st.top(); st.pop();
+            inStack[v] = false;
+            if(v == u) break;
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== VÍ DỤ BÀI =====================
+
+\begin{frame}{\hlwhite{Ví dụ bài toán}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Đề bài}}]
+Cho đồ thị có hướng $G(V, E)$.
+
+Hãy:
+\begin{itemize}
+\item Tìm các SCC
+\item Xây dựng đồ thị co
+\item Sắp xếp topo trên đồ thị mới
+\end{itemize}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Ý tưởng:
+\begin{itemize}
+\item \hlblue{SCC (Tarjan/Kosaraju)}
+\item \hlgreen{Build DAG}
+\item \hlpurple{Topo sort}
+\end{itemize}
+
+\item Độ phức tạp:
+\[
+\hlred{O(n + m)}
+\]
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item SCC dùng để xử lý chu trình
+\item Nén đồ thị → DAG
+\item Kết hợp topo để giải bài nâng cao
+\end{itemize}
+\end{frame}
+
+\end{document}
