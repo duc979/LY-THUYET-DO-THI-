@@ -1,0 +1,232 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Shortest Path trên DAG}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+Tìm đường đi ngắn nhất trên:
+
+\hlblue{Directed Acyclic Graph (DAG)}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Không có chu trình
+\item Có thể có \hlred{trọng số âm}
+\end{itemize}
+\end{frame}
+
+% ===================== Ý TƯỞNG =====================
+
+\begin{frame}{\hlwhite{Ý tưởng}}
+\begin{itemize}
+\item Sắp xếp topo các đỉnh
+\item Relax theo thứ tự topo
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Mỗi đỉnh chỉ xử lý 1 lần}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== TẠI SAO ĐÚNG =====================
+
+\begin{frame}{\hlwhite{Tại sao đúng}}
+\begin{itemize}
+\item Trong DAG:
+\begin{itemize}
+\item Không có chu trình
+\end{itemize}
+
+\item Khi duyệt topo:
+\begin{itemize}
+\item Đỉnh trước luôn tối ưu trước
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlgreen{Không cần lặp nhiều lần như Bellman-Ford}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Thuật toán}}
+\begin{itemize}
+\item Topological Sort
+\item Khởi tạo:
+\begin{itemize}
+\item $dist[s] = 0$
+\item còn lại = $\infty$
+\end{itemize}
+
+\item Duyệt theo topo:
+\begin{itemize}
+\item Relax các cạnh
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== RELAX =====================
+
+\begin{frame}{\hlwhite{Relaxation}}
+\begin{tcolorbox}
+\centering
+\[
+dist[v] = \min(dist[v], dist[u] + w(u,v))
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Mỗi cạnh chỉ xét 1 lần
+\end{itemize}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++]
+for(int u : topo){
+    for(auto [v, w] : adj[u]){
+        if(dist[u] + w < dist[v]){
+            dist[v] = dist[u] + w;
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Topo sort: $O(n + m)$
+\item Relax: $O(m)$
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{$O(n + m)$}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh}}
+\begin{itemize}
+\item Dijkstra:
+\begin{itemize}
+\item $O((n+m)\log n)$
+\end{itemize}
+
+\item Bellman-Ford:
+\begin{itemize}
+\item $O(nm)$
+\end{itemize}
+
+\item DAG:
+\begin{itemize}
+\item \hlgreen{$O(n + m)$}
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Nhanh nhất nếu đồ thị là DAG}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== KHI NÀO DÙNG =====================
+
+\begin{frame}{\hlwhite{Khi nào dùng}}
+\begin{itemize}
+\item Đồ thị không có chu trình
+\item Bài có dạng:
+\begin{itemize}
+\item DP trên DAG
+\item SCC → nén thành DAG
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Không cần heap, không cần lặp nhiều
+\item Hỗ trợ trọng số âm
+\item Cực mạnh khi kết hợp SCC
+\end{itemize}
+\end{frame}
+
+\end{document}

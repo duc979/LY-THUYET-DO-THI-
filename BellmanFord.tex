@@ -1,0 +1,231 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Bellman-Ford Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+\hlblue{Bellman-Ford} là thuật toán tìm:
+
+\[
+\text{Shortest Path từ } s \rightarrow v
+\]
+
+trong đồ thị có thể chứa \hlred{trọng số âm}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Áp dụng cho \hlgreen{single-source}
+\item Xử lý được cạnh âm
+\end{itemize}
+\end{frame}
+
+% ===================== Ý TƯỞNG =====================
+
+\begin{frame}{\hlwhite{Ý tưởng}}
+\begin{itemize}
+\item Lặp qua tất cả các cạnh
+\item Thực hiện \hlblue{relaxation}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Lặp $n-1$ lần}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Vì đường đi dài nhất có tối đa $n-1$ cạnh
+\end{itemize}
+\end{frame}
+
+% ===================== RELAX =====================
+
+\begin{frame}{\hlwhite{Relaxation}}
+\begin{tcolorbox}
+\centering
+\[
+dist[v] = \min(dist[v], dist[u] + w(u,v))
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Cập nhật khoảng cách tốt hơn
+\item Áp dụng cho mọi cạnh
+\end{itemize}
+\end{frame}
+
+% ===================== NEGATIVE CYCLE =====================
+
+\begin{frame}{\hlwhite{Negative Cycle}}
+\begin{itemize}
+\item Sau $n-1$ lần:
+\begin{itemize}
+\item Nếu còn relax được → có chu trình âm
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Negative Cycle → không tồn tại đường đi ngắn nhất}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Thuật toán}}
+\begin{itemize}
+\item Khởi tạo:
+\begin{itemize}
+\item $dist[s] = 0$
+\item còn lại = $\infty$
+\end{itemize}
+
+\item Lặp $n-1$ lần:
+\begin{itemize}
+\item Duyệt tất cả cạnh
+\end{itemize}
+
+\item Lần thứ $n$:
+\begin{itemize}
+\item Kiểm tra chu trình âm
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++]
+for(int i = 1; i <= n-1; i++){
+    for(auto e : edges){
+        int u = e.u, v = e.v, w = e.w;
+        if(dist[u] + w < dist[v]){
+            dist[v] = dist[u] + w;
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Detect Negative Cycle}}
+\begin{lstlisting}[language=C++]
+for(auto e : edges){
+    int u = e.u, v = e.v, w = e.w;
+    if(dist[u] + w < dist[v]){
+        // có negative cycle
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Mỗi lần: duyệt $m$ cạnh
+\item Lặp $n-1$ lần
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{$O(n \cdot m)$}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh}}
+\begin{itemize}
+\item Dijkstra:
+\begin{itemize}
+\item Nhanh hơn
+\item Không xử lý được cạnh âm
+\end{itemize}
+
+\item Bellman-Ford:
+\begin{itemize}
+\item Chậm hơn
+\item \hlgreen{Xử lý được cạnh âm + phát hiện cycle}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Dùng khi có cạnh âm
+\item Quan trọng để detect negative cycle
+\item Là nền tảng cho SPFA
+\end{itemize}
+\end{frame}
+
+\end{document}
