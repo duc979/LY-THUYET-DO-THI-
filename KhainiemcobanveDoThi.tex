@@ -45,6 +45,15 @@ arc=3mm
 \author{NHÓM 3}
 \date{\today}
 
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
 \begin{document}
 
 \frame{\titlepage}
