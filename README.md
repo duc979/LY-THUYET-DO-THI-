@@ -46,29 +46,29 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 # 5. Cây và cây khung (Trees & MST)
 
-- [10. Cây, cây khung, MST](CayCayKhungMST.pdf)
-- [11. Tính chất tham lam của MST]
-- [12. DSU (Disjoint Set Union)]
-- [13. Kruskal]
-- [14. Prim]
+- [9. Cây, cây khung, MST](CayCayKhungMST.pdf)
+- [10. Tính chất tham lam của MST]
+- [11. DSU (Disjoint Set Union)]
+- [12. Kruskal]
+- [13. Prim]
 
 ---
 
 # 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
-- [15. Tổng quan Shortest Path và Relaxation](Shortestpath.pdf)
-- [16. Bellman–Ford]
-- [17. Shortest Path trên DAG]
-- [18. Dijkstra]
-- [19. All-pairs Shortest Paths](
+- [14. Tổng quan Shortest Path và Relaxation](Shortestpath.pdf)
+- [15. Bellman–Ford]
+- [16. Shortest Path trên DAG]
+- [17. Dijkstra]
+- [18. All-pairs Shortest Paths](
 
 ---
 
 # 9. Bài toán luồng (Flow Algorithms)
 
-- [20. Bài toán luồng cực đại]
-- [21. Ford–Fulkerson]
-- [22. Edmonds–Karp]
+- [19. Bài toán luồng cực đại]
+- [20. Ford–Fulkerson]
+- [21. Edmonds–Karp]
 
 ---
 
