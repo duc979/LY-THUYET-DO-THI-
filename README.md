@@ -2,8 +2,9 @@
 ## NHÓM 3
 - Ngô Quang Đức (LEADER)
 - Dương Khánh Kỳ 
-- Nguyễn Hồ An Minh 
-- 
+- Nguyễn Hồ An Minh
+
+
 # 📚 ROADMAP
 
 Lộ trình học **Graph Algorithms** từ cơ bản → nâng cao.
