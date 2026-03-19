@@ -1,0 +1,234 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Dijkstra Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+\hlblue{Dijkstra} là thuật toán tìm:
+
+\[
+\text{Shortest Path từ } s \rightarrow v
+\]
+
+trong đồ thị có \hlgreen{trọng số không âm}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Áp dụng cho \hlred{single-source}
+\item Không xử lý được cạnh âm
+\end{itemize}
+\end{frame}
+
+% ===================== BẢN CHẤT =====================
+
+\begin{frame}{\hlwhite{Bản chất}}
+\begin{itemize}
+\item Thuật toán \hlblue{Greedy (Tham lam)}
+\item Luôn chọn đỉnh có khoảng cách nhỏ nhất
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Một khi đã chọn → khoảng cách là tối ưu}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== QUY TRÌNH =====================
+
+\begin{frame}{\hlwhite{Quy trình}}
+\begin{itemize}
+\item Khởi tạo:
+\begin{itemize}
+\item $dist[s] = 0$
+\item còn lại = $\infty$
+\end{itemize}
+
+\item Dùng \hlgreen{priority queue}
+\item Lặp:
+\begin{itemize}
+\item Lấy đỉnh nhỏ nhất
+\item Relax các cạnh
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== RELAX =====================
+
+\begin{frame}{\hlwhite{Relaxation}}
+\begin{tcolorbox}
+\centering
+\[
+dist[v] = \min(dist[v], dist[u] + w(u,v))
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Nếu tốt hơn → cập nhật
+\item Đẩy lại vào heap
+\end{itemize}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++]
+priority_queue<pair<long long,int>,
+    vector<pair<long long,int>>,
+    greater<pair<long long,int>>> pq;
+
+dist[s] = 0;
+pq.push({0, s});
+
+while(!pq.empty()){
+    auto [d, u] = pq.top(); pq.pop();
+    if(d > dist[u]) continue;
+
+    for(auto [v, w] : adj[u]){
+        if(dist[v] > dist[u] + w){
+            dist[v] = dist[u] + w;
+            pq.push({dist[v], v});
+        }
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Dùng heap:
+\begin{itemize}
+\item Push / pop: $\log n$
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{$O((n + m)\log n)$}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== LỖI =====================
+
+\begin{frame}{\hlwhite{Lỗi thường gặp}}
+\begin{itemize}
+\item \hlred{Có cạnh âm → sai}
+\item Không check:
+\begin{itemize}
+\item \texttt{if(d > dist[u]) continue;}
+\end{itemize}
+\item Không dùng \hlblue{long long}
+\end{itemize}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh}}
+\begin{itemize}
+\item BFS:
+\begin{itemize}
+\item Trọng số = 1
+\end{itemize}
+
+\item Bellman-Ford:
+\begin{itemize}
+\item Có cạnh âm
+\end{itemize}
+
+\item Dijkstra:
+\begin{itemize}
+\item \hlgreen{Nhanh nhất khi không âm}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Thuật toán quan trọng trong shortest path
+\item Dùng rất nhiều trong contest
+\item Hiểu rõ heap là đủ dùng
+\end{itemize}
+\end{frame}
+
+\end{document}
