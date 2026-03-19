@@ -73,6 +73,6 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 ---
 
-# 9. Tài liệu tham khảo
-- Chủ đề 1: (https://wiki.vnoi.info/algo/graph-theory/graph)
+# 10. Tài liệu tham khảo
+- 1. (https://wiki.vnoi.info/algo/graph-theory/graph)
 - 
