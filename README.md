@@ -68,7 +68,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 # 7. Bài toán luồng (Flow Algorithms)
 
 - [19. Bài toán luồng cực đại](MaximumFlow.pdf)
-- [20. Ford–Fulkerson]
+- [20. Ford–Fulkerson](FordFulkerson.pdf)
 - [21. Edmonds–Karp]
 
 ---
