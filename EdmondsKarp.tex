@@ -1,0 +1,236 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Edmonds–Karp Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Ý tưởng}}]
+\hlblue{Edmonds–Karp} là phiên bản của Ford–Fulkerson:
+
+\[
+\text{Luôn tìm augmenting path bằng BFS}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Đường đi ngắn nhất theo số cạnh
+\item Dùng \hlgreen{queue (BFS)}
+\end{itemize}
+\end{frame}
+
+% ===================== BẢN CHẤT =====================
+
+\begin{frame}{\hlwhite{Bản chất}}
+\begin{itemize}
+\item Là \hlblue{Ford–Fulkerson + BFS}
+\item Tăng luồng từng bước ổn định
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Không phụ thuộc cách chọn đường}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== BFS =====================
+
+\begin{frame}{\hlwhite{BFS tìm đường}}
+\begin{itemize}
+\item Tìm đường từ $s \rightarrow t$
+\item Lưu cha:
+\begin{itemize}
+\item \hlblue{par[v]}
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlcyan{Đảm bảo đường ngắn nhất}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Thuật toán}}
+\begin{itemize}
+\item Lặp:
+\begin{itemize}
+\item BFS tìm đường
+\item Tính bottleneck
+\item Cập nhật flow
+\end{itemize}
+
+\item Dừng khi:
+\begin{itemize}
+\item Không còn đường
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++]
+bool bfs(){
+    memset(par, -1, sizeof(par));
+    queue<int> q;
+    q.push(s);
+    par[s] = s;
+
+    while(!q.empty()){
+        int u = q.front(); q.pop();
+        for(int v : adj[u]){
+            if(par[v] == -1 && cap[u][v] > 0){
+                par[v] = u;
+                if(v == t) return true;
+                q.push(v);
+            }
+        }
+    }
+    return false;
+}
+
+while(bfs()){
+    int flow = INF;
+
+    for(int v = t; v != s; v = par[v]){
+        int u = par[v];
+        flow = min(flow, cap[u][v]);
+    }
+
+    for(int v = t; v != s; v = par[v]){
+        int u = par[v];
+        cap[u][v] -= flow;
+        cap[v][u] += flow;
+    }
+
+    maxflow += flow;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{tcolorbox}
+\centering
+\[
+\hlred{O(V \cdot E^2)}
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Mỗi BFS: $O(E)$
+\item Số lần BFS bị chặn
+\end{itemize}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh}}
+\begin{itemize}
+\item Ford-Fulkerson:
+\begin{itemize}
+\item Có thể chậm
+\end{itemize}
+
+\item Edmonds-Karp:
+\begin{itemize}
+\item \hlgreen{Ổn định}
+\end{itemize}
+
+\item Dinic:
+\begin{itemize}
+\item \hlpurple{Nhanh nhất}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Dễ cài đặt hơn Dinic
+\item Luôn cho kết quả đúng
+\item Phù hợp bài vừa
+\end{itemize}
+\end{frame}
+
+\end{document}
