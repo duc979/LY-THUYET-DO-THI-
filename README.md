@@ -44,13 +44,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 ---
 
-# 5. Bài toán logic trên đồ thị
-
-- [9. 2-SAT và implication graph]
-
----
-
-# 6. Cây và cây khung (Trees & MST)
+# 5. Cây và cây khung (Trees & MST)
 
 - [10. Cây, cây khung, MST](CayCayKhungMST.pdf)
 - [11. Tính chất tham lam của MST]
@@ -60,7 +54,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 ---
 
-# 7. Bài toán đường đi ngắn nhất (Shortest Path)
+# 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
 - [15. Tổng quan Shortest Path]
 - [16. Relaxation]
@@ -71,7 +65,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 ---
 
-# 8. Bài toán luồng (Flow Algorithms)
+# 9. Bài toán luồng (Flow Algorithms)
 
 - [20. Bài toán luồng cực đại]
 - [21. Ford–Fulkerson]
