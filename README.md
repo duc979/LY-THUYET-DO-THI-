@@ -1,8 +1,8 @@
 # LÝ THUYẾT ĐỒ THỊ
 ## NHÓM 3
-- Ngô Quang Đức 
+- Ngô Quang Đức (LEADER)
 - Dương Khánh Kỳ 
-- Nguyễn Hồ An Minh (LEADER)
+- Nguyễn Hồ An Minh 
 - 
 # 📚 ROADMAP
 
