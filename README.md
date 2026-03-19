@@ -59,7 +59,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [14. Tổng quan Shortest Path và Relaxation](Shortestpath.pdf)
 - [15. Bellman–Ford](BellmanFord.pdf)
 - [16. Shortest Path trên DAG](ShortestPathDAG.pdf)
-- [17. Dijkstra]
+- [17. Dijkstra](Dijkstra.pdf)
 - [18. All-pairs Shortest Paths](
 
 ---
