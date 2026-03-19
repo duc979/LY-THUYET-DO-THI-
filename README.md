@@ -57,7 +57,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 # 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
-- [14. Tổng quan Shortest Path và Relaxation](Shortestpath.pdf)
+- [14. Tổng quan Shortest Path và Relaxation](ShortestpathNRelaxation.pdf)
 - [15. Bellman–Ford](BellmanFord.pdf)
 - [16. Shortest Path trên DAG](ShortestPathDAG.pdf)
 - [17. Dijkstra](Dijkstra.pdf)
