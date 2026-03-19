@@ -1,0 +1,249 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Ford–Fulkerson Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Ý tưởng}}]
+\hlblue{Ford–Fulkerson} là thuật toán tìm \hlred{maximum flow} bằng cách:
+
+\[
+\text{Liên tục tìm augmenting path từ } s \rightarrow t
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+\item Dựa trên \hlgreen{residual graph}
+\item Có thể dùng DFS/BFS
+\end{itemize}
+\end{frame}
+
+% ===================== AUGMENTING =====================
+
+\begin{frame}{\hlwhite{Augmenting Path}}
+\begin{itemize}
+\item Là đường từ $s$ đến $t$ còn capacity
+\item Flow tăng theo:
+\[
+\min \text{ capacity trên đường}
+\]
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Nút thắt cổ chai (bottleneck)}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== RESIDUAL =====================
+
+\begin{frame}{\hlwhite{Residual Graph}}
+\begin{itemize}
+\item Cạnh $(u,v)$:
+\begin{itemize}
+\item $cap[u][v]$: còn lại
+\item $cap[v][u]$: luồng ngược
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Cho phép "quay lui" luồng}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== THUẬT TOÁN =====================
+
+\begin{frame}{\hlwhite{Thuật toán}}
+\begin{itemize}
+\item Lặp:
+\begin{itemize}
+\item Tìm đường $s \rightarrow t$
+\item Cập nhật flow
+\end{itemize}
+
+\item Dừng khi:
+\begin{itemize}
+\item Không còn đường tăng luồng
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlcyan{Greedy + DFS/BFS}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]
+\frametitle{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++, breaklines=true]
+bool dfs(int u, int flow){
+    if(u == t) return flow;
+    vis[u] = true;
+    for(int v : adj[u]){
+        if(!vis[v] && cap[u][v] > 0){
+            int pushed = dfs(v, min(flow, cap[u][v]));
+            if(pushed){
+                cap[u][v] -= pushed;
+                cap[v][u] += pushed;
+                return pushed;
+            }
+        }
+    }
+    return 0;
+}
+while(int pushed = dfs(s, INF)){
+    maxflow += pushed;
+}
+\end{lstlisting}
+}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Phụ thuộc:
+\begin{itemize}
+\item Cách chọn đường
+\item Giá trị flow
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\[
+\hlred{O(E \cdot maxflow)}
+\]
+\end{tcolorbox}
+\end{frame}
+
+% ===================== HẠN CHẾ =====================
+
+\begin{frame}{\hlwhite{Hạn chế}}
+\begin{itemize}
+\item Có thể \hlred{chậm}
+\item Không ổn định với:
+\begin{itemize}
+\item Graph lớn
+\item Capacity lớn
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Phụ thuộc đường đi}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CẢI TIẾN =====================
+
+\begin{frame}{\hlwhite{Cải tiến}}
+\begin{itemize}
+\item \hlblue{Edmonds-Karp}
+\begin{itemize}
+\item BFS
+\end{itemize}
+
+\item \hlgreen{Dinic}
+\begin{itemize}
+\item Level graph
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlcyan{Nhanh hơn nhiều}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Là nền tảng của Max Flow
+\item Dễ hiểu, dễ code
+\item Nhưng không tối ưu
+\end{itemize}
+\end{frame}
+
+\end{document}
