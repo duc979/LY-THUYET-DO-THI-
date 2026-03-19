@@ -1,0 +1,379 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+% --- đảm bảo chữ trên nền xanh dương là trắng ---
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamercolor{structure}{fg=myblue}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros nhấn mạnh
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% --- title page chỉnh để chữ trên thanh nền xanh vẫn trắng ---
+\setbeamertemplate{title page}
+{
+\centering
+\vspace{2cm}
+{\usebeamerfont{title}\color{white}\inserttitle\par}
+\vspace{1cm}
+{\usebeamerfont{author}\insertauthor\par}
+\vspace{0.5cm}
+{\usebeamerfont{date}\insertdate\par}
+}
+
+\title{\hlred{Cây — Cây khung — MST}}
+\author{Nhóm 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% -------------------- Định nghĩa cây --------------------
+
+\begin{frame}{\hlwhite{Định nghĩa Cây}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Khái niệm}}]
+\hlblue{Cây} là một đồ thị vô hướng \emph{\hlgreen{liên thông}} và \emph{\hlred{không chứa chu trình}}.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Cây = \hlgreen{liên thông} + \hlred{không có chu trình}}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Tính chất --------------------
+
+\begin{frame}{\hlwhite{Tính chất của cây}}
+\begin{itemize}
+  \item Với \hlblue{$n$ đỉnh} thì một cây có chính xác \hlred{$n-1$ cạnh}.
+  \item Giữa hai đỉnh bất kỳ luôn tồn tại \hlgreen{một và chỉ một đường đi}.
+  \item Thêm một cạnh bất kỳ vào cây sẽ tạo thành \hlred{chu trình}.
+  \item Xóa một cạnh bất kỳ khỏi cây sẽ khiến đồ thị \hlorange{không còn liên thông}.
+\end{itemize}
+\end{frame}
+
+% -------------------- Ví dụ cây --------------------
+
+\begin{frame}{\hlwhite{Ví dụ minh họa một cây}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (-1,-1) {2};
+\node[v] (3) at (1,-1) {3};
+\node[v] (4) at (-1.5,-2) {4};
+\node[v] (5) at (-0.5,-2) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (2)--(5);
+\end{tikzpicture}
+
+\vspace{0.3cm}
+\hlpurple{Đồ thị trên liên thông, không có chu trình \(\rightarrow\) là cây.}
+\end{frame}
+
+% -------------------- Định nghĩa cây khung --------------------
+
+\begin{frame}{\hlwhite{Cây khung (Spanning Tree)}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Định nghĩa}}]
+Trong một đồ thị vô hướng $G$, \hlblue{cây khung} là một cây con chứa \hlred{tất cả các đỉnh} của $G$ và là \hlgreen{liên thông} (không chu trình).
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Mỗi cây khung có đúng \hlred{$n-1$ cạnh} nếu đồ thị có \hlblue{$n$ đỉnh}.
+  \item Một đồ thị \hlgreen{liên thông} luôn có ít nhất một cây khung.
+\end{itemize}
+\end{frame}
+
+% -------------------- Ví dụ cây khung --------------------
+
+\begin{frame}{\hlwhite{Ví dụ cây khung}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1) {2};
+\node[v] (3) at (2,-1) {3};
+\node[v] (4) at (4,0) {4};
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw[dashed] (3)--(4);
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\hlpurple{Nếu bỏ cạnh nét đứt, ta thu được một cây khung (liên thông, không chu trình).}
+\end{frame}
+
+% -------------------- Số lượng cây khung --------------------
+
+\begin{frame}{\hlwhite{Số lượng và lựa chọn cây khung}}
+\begin{itemize}
+  \item Một đồ thị có thể có \hlpurple{nhiều cây khung khác nhau}.
+  \item Ví dụ đồ thị đầy đủ \hlblue{$K_n$} có số lượng cây khung rất lớn.
+  \item Trong nhiều bài toán ta cần chọn cây khung \hlred{"tốt nhất"} theo tiêu chí nào đó (ví dụ \hlorange{tổng chi phí nhỏ nhất}).
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlblue{Bài toán thực tế: chọn cây khung tối ưu theo chi phí}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- MST --------------------
+
+\begin{frame}{\hlwhite{Cây khung nhỏ nhất (MST)}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Khái niệm}}]
+Với một đồ thị vô hướng có \hlpurple{trọng số} trên các cạnh, \hlblue{cây khung nhỏ nhất (MST)} là cây khung có \hlred{tổng trọng số các cạnh nhỏ nhất}.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item MST áp dụng cho các bài toán \hlorange{tối ưu chi phí kết nối}.
+  \item MST giữ \hlgreen{liên thông} và \hlred{tối thiểu hóa tổng chi phí}.
+\end{itemize}
+\end{frame}
+
+% -------------------- Ví dụ MST --------------------
+
+\begin{frame}{\hlwhite{Ví dụ minh họa MST}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1) {2};
+\node[v] (3) at (2,-1) {3};
+\node[v] (4) at (4,0) {4};
+
+% cạnh đầy đủ
+\draw[black!100] (1)-- node[above]{2} (2);
+\draw[black!100] (1)-- node[below]{3} (3);
+\draw[black!100] (2)-- node[above]{1} (4);
+\draw[black!100] (3)-- node[below]{4} (4);
+
+% các cạnh thuộc MST
+\draw[very thick,myred] (2)-- (4);
+\draw[very thick,myred] (1)-- (2);
+\draw[very thick,myred] (1)-- (3);
+
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\hlpurple{Chọn tập cạnh liên thông sao cho tổng trọng số nhỏ nhất: \(1 + 2 + 3 = 6\).}
+\end{frame}
+
+% -------------------- Tính chất MST --------------------
+
+\begin{frame}{\hlwhite{Tính chất quan trọng của MST}}
+\begin{itemize}
+  \item Mỗi MST có đúng \hlred{$n-1$ cạnh} (với \hlblue{$n$ đỉnh}).
+  \item Nếu tất cả trọng số \hlgreen{phân biệt} thì MST là \hlred{duy nhất}.
+  \item Nếu có trọng số \hlorange{bằng nhau} thì có thể tồn tại \hlpurple{nhiều MST khác nhau}.
+\end{itemize}
+\end{frame}
+
+% -------------------- Tính chất cắt và chu trình --------------------
+
+\begin{frame}{\hlwhite{Thuộc tính cắt và chu trình (tóm tắt)}}
+\begin{itemize}
+  \item \textbf{\hlgreen{Cut property (tính chất cắt):}} Trong mọi phân chia tập đỉnh thành hai phần, cạnh có \hlred{trọng số nhỏ nhất} nối hai phần đó luôn thuộc ít nhất một MST.
+  \item \textbf{\hlpurple{Cycle property (tính chất chu trình):}} Trong một chu trình, cạnh có \hlred{trọng số lớn nhất} không thể thuộc MST nếu có thể thay thế bằng cạnh khác tốt hơn.
+\end{itemize}
+\end{frame}
+
+% -------------------- Tính chất tham lam --------------------
+
+\begin{frame}{\hlwhite{Tính chất tham lam của MST}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Ý tưởng tham lam}}]
+Tại mỗi bước, ta luôn chọn cạnh \hlred{nhỏ nhất có thể} nhưng vẫn đảm bảo \hlblue{không tạo chu trình}.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Luôn ưu tiên cạnh có \hlred{trọng số nhỏ nhất}.
+  \item Chỉ chọn cạnh đó nếu nó \hlgreen{không làm xuất hiện chu trình}.
+  \item Lặp lại cho đến khi thu được đủ \hlblue{$n-1$ cạnh}.
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Chọn tốt nhất ở từng bước \(\rightarrow\) đạt tối ưu toàn cục}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Vì sao greedy đúng --------------------
+
+\begin{frame}{\hlwhite{Vì sao chiến lược tham lam đúng?}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Lý do chính}}]
+Nếu ta xét một tập đỉnh đã nối được với nhau, thì cạnh rẻ nhất đi ra ngoài luôn là lựa chọn an toàn để mở rộng cây.
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Chọn cạnh nhỏ nhất giúp giảm tổng trọng số.
+  \item Nếu cạnh đó không tạo chu trình, ta vẫn giữ được cấu trúc cây.
+  \item Nhờ \hlblue{cut property}, cạnh nhỏ nhất qua một lát cắt luôn có thể nằm trong một MST.
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlorange{Đây là nền tảng chứng minh tính đúng đắn của Kruskal và Prim}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Minh họa greedy --------------------
+
+\begin{frame}{\hlwhite{Minh họa tính chất tham lam}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10,minimum size=8mm}}
+
+\node[v] (1) at (0,0) {1};
+\node[v] (2) at (2,1) {2};
+\node[v] (3) at (2,-1) {3};
+\node[v] (4) at (4,0) {4};
+\node[v] (5) at (6,0) {5};
+
+\draw[black!100] (1)-- node[above]{4} (2);
+\draw[black!100] (1)-- node[below]{3} (3);
+\draw[black!100] (2)-- node[below]{2} (4);
+\draw[black!100] (3)-- node[below]{5} (4);
+\draw[black!100] (4)-- node[below]{1} (5);
+\draw[black!100] (2)-- node[above]{6} (5);
+
+% chọn cạnh nhỏ nhất trước
+\draw[very thick,myred] (4)-- (5);
+\draw[very thick,myred] (2)-- (4);
+\draw[very thick,myred] (1)-- (3);
+\draw[very thick,myred] (1)-- (2);
+
+\end{tikzpicture}
+
+\vspace{0.25cm}
+\hlpurple{Ta ưu tiên cạnh nhỏ nhất trước: \(1 \rightarrow 2 \rightarrow 3 \rightarrow 4\), nhưng luôn tránh tạo chu trình.}
+\end{frame}
+
+% -------------------- Ví dụ từng bước --------------------
+
+\begin{frame}{\hlwhite{Ví dụ từng bước chọn cạnh}}
+\begin{tcolorbox}[title=\textbf{\hlgreen{Đồ thị ví dụ}}]
+Xét đồ thị có 4 đỉnh và các cạnh:
+\[
+(1,2)=1,\quad (2,4)=2,\quad (1,3)=3,\quad (3,4)=4
+\]
+\end{tcolorbox}
+
+\begin{itemize}
+  \item Bước 1: chọn cạnh \hlred{$(1,2)$} vì có trọng số nhỏ nhất.
+  \item Bước 2: chọn cạnh \hlred{$(2,4)$} vì chưa tạo chu trình.
+  \item Bước 3: chọn cạnh \hlred{$(1,3)$} để nối đỉnh còn lại.
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlblue{Kết quả thu được là một cây khung nhỏ nhất với tổng trọng số \(1+2+3=6\).}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Liên hệ thuật toán --------------------
+
+\begin{frame}{\hlwhite{Greedy \(\rightarrow\) Thuật toán MST}}
+\begin{itemize}
+  \item \hlblue{Kruskal}: sắp xếp các cạnh theo trọng số tăng dần, chọn dần nếu \hlred{không tạo chu trình}.
+  \item \hlgreen{Prim}: bắt đầu từ một đỉnh, mở rộng dần cây bằng cạnh \hlred{nhỏ nhất nối ra ngoài}.
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlorange{Cả hai thuật toán đều dựa trên tư tưởng tham lam của MST}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Ứng dụng --------------------
+
+\begin{frame}{\hlwhite{Ứng dụng của MST}}
+\begin{itemize}
+  \item Thiết kế \hlblue{mạng đường truyền}, \hlgreen{mạng điện} với chi phí tối thiểu.
+  \item Lập kế hoạch xây dựng \hlorange{đường giao thông} với chi phí tiết kiệm.
+  \item Ứng dụng trong \hlpurple{phân cụm (clustering)} trong học máy.
+  \item \hlcyan{Tiền xử lý} cho các bài toán tối ưu khác trên đồ thị.
+\end{itemize}
+\end{frame}
+
+% -------------------- So sánh tổng quan --------------------
+
+\begin{frame}{\hlwhite{So sánh ngắn}}
+\begin{tcolorbox}
+\begin{itemize}
+  \item \hlgreen{Cây}: cấu trúc đồ thị liên thông, không chu trình.
+  \item \hlgreen{Cây khung}: cây con bao phủ toàn bộ đỉnh của đồ thị.
+  \item \hlgreen{MST}: cây khung có tổng trọng số cạnh nhỏ nhất.
+  \end{itemize}
+\end{tcolorbox}
+\end{frame}
+
+% -------------------- Kết luận --------------------
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+  \item Cây và cây khung là khái niệm nền tảng trong lý thuyết đồ thị.
+  \item MST là bài toán tối ưu ứng dụng rộng rãi trong thực tế.
+  \item Tính chất tham lam là cơ sở để xây dựng các thuật toán như Kruskal và Prim.
+  \item Các tính chất cut/cycle giúp chứng minh vì sao lựa chọn cục bộ đúng sẽ dẫn đến lời giải tối ưu.
+\end{itemize}
+
+\centerline{\hlorange{Cảm ơn!}}
+\end{frame}
+
+\end{document}
