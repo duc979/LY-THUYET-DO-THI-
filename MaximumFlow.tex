@@ -1,0 +1,240 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{60,179,113}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Bài toán luồng cực đại}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Khái niệm}}]
+\hlblue{Bài toán luồng cực đại (Maximum Flow)} là bài toán tìm:
+
+\[
+\text{Luồng lớn nhất từ } s \rightarrow t
+\]
+
+thoả mãn:
+\begin{itemize}
+\item Không vượt quá \hlgreen{capacity}
+\item Bảo toàn luồng tại mỗi đỉnh
+\end{itemize}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== BẢN CHẤT =====================
+
+\begin{frame}{\hlwhite{Bản chất}}
+\begin{itemize}
+\item Đẩy luồng qua các cạnh
+\item Cập nhật \hlblue{residual graph}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Flow = augmenting paths}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== RESIDUAL =====================
+
+\begin{frame}{\hlwhite{Residual Graph}}
+\begin{itemize}
+\item Với mỗi cạnh $(u,v)$:
+\begin{itemize}
+\item Cạnh thuận: còn bao nhiêu capacity
+\item Cạnh ngược: cho phép "hoàn tác"
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Chìa khoá của thuật toán}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== FORD FULKERSON =====================
+
+\begin{frame}{\hlwhite{Ford-Fulkerson}}
+\begin{itemize}
+\item Lặp:
+\begin{itemize}
+\item Tìm đường tăng luồng
+\item Cập nhật flow
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Dựa trên DFS}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== EDMONDS KARP =====================
+
+\begin{frame}{\hlwhite{Edmonds-Karp}}
+\begin{itemize}
+\item Dùng \hlblue{BFS} thay DFS
+\item Luôn chọn đường ngắn nhất
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlgreen{Ổn định hơn Ford-Fulkerson}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code (Core)}}
+\begin{lstlisting}[language=C++]
+while(bfs()){
+    int flow = INF;
+    for(int v = t; v != s; v = par[v]){
+        int u = par[v];
+        flow = min(flow, cap[u][v]);
+    }
+
+    for(int v = t; v != s; v = par[v]){
+        int u = par[v];
+        cap[u][v] -= flow;
+        cap[v][u] += flow;
+    }
+
+    maxflow += flow;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Ford-Fulkerson:
+\[
+O(E \cdot maxflow)
+\]
+
+\item Edmonds-Karp:
+\[
+O(VE^2)
+\]
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Chậm với dữ liệu lớn}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== NÂNG CAO =====================
+
+\begin{frame}{\hlwhite{Nâng cao}}
+\begin{itemize}
+\item \hlblue{Dinic}
+\begin{itemize}
+\item BFS + DFS
+\end{itemize}
+
+\item \hlpurple{Min Cut}
+\begin{itemize}
+\item Max Flow = Min Cut
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== ỨNG DỤNG =====================
+
+\begin{frame}{\hlwhite{Ứng dụng}}
+\begin{itemize}
+\item Bipartite Matching
+\item Network Routing
+\item Scheduling
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Max Flow là bài toán quan trọng
+\item Dựa trên residual graph
+\item Có nhiều biến thể mạnh (Dinic)
+\end{itemize}
+\end{frame}
+
+\end{document}
