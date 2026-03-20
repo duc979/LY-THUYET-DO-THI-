@@ -1,0 +1,460 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit,shapes.geometric}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{0,180,0}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+\definecolor{mygray}{RGB}{90,90,90}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+\newcommand{\hlgray}[1]{\textcolor{mygray}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\scriptsize,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue},
+aboveskip=2pt,
+belowskip=2pt,
+xleftmargin=6pt,
+xrightmargin=6pt
+}
+
+\title{\hlred{Prim Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Prim là gì?}}]
+\hlblue{Prim} là thuật toán tìm \hlgreen{cây khung nhỏ nhất} \hlpurple{(Minimum Spanning Tree - MST)}
+trong một đồ thị vô hướng, liên thông, có trọng số.
+\end{tcolorbox}
+
+\begin{itemize}
+\item Bắt đầu từ một đỉnh bất kỳ
+\item Mở rộng dần cây khung bằng cách chọn cạnh nhỏ nhất
+\item Không tạo chu trình
+\end{itemize}
+\end{frame}
+
+% ===================== MST =====================
+
+\begin{frame}{\hlwhite{Cây khung nhỏ nhất là gì?}}
+\begin{itemize}
+\item \hlblue{Cây khung} là tập cạnh nối tất cả các đỉnh của đồ thị
+\item Có đúng $n-1$ cạnh nếu đồ thị có $n$ đỉnh
+\item \hlred{Không có chu trình}
+\item \hlgreen{Tổng trọng số nhỏ nhất} trong tất cả các cây khung
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Prim xây dựng MST bằng cách mở rộng từ một đỉnh gốc}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== Ý TƯỞNG =====================
+
+\begin{frame}{\hlwhite{Ý tưởng của Prim}}
+\begin{enumerate}
+\item Chọn một đỉnh bắt đầu
+\item Luôn giữ tập đỉnh đã thuộc MST
+\item Từ tập này, chọn cạnh nhỏ nhất nối ra ngoài
+\item Thêm đỉnh mới vào MST
+\item Lặp lại cho đến khi có đủ $n$ đỉnh
+\end{enumerate}
+
+\begin{tcolorbox}
+\centering
+\hlred{Prim mở rộng cây từng bước từ bên trong ra ngoài}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== BẢN CHẤT =====================
+
+\begin{frame}{\hlwhite{Bản chất}}
+\begin{itemize}
+\item Thuật toán \hlblue{Greedy (tham lam)}
+\item Mỗi bước chọn cạnh nhỏ nhất hợp lệ
+\item Cạnh được chọn phải nối từ cây hiện tại ra một đỉnh chưa thăm
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlgreen{Mỗi lần thêm một đỉnh mới vào cây khung}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CẤU TRÚC DỮ LIỆU =====================
+
+\begin{frame}{\hlwhite{Cấu trúc dữ liệu cần dùng}}
+\begin{itemize}
+\item Danh sách kề của đồ thị
+\item \hlblue{Priority queue / min-heap}
+\item Mảng \texttt{visited} để đánh dấu đỉnh đã thuộc MST
+\item Mảng \texttt{parent} nếu muốn truy vết cạnh của cây khung
+\end{itemize}
+
+\begin{tcolorbox}[title=\textbf{\hlwhite{Vai trò của heap}}]
+Heap giúp ta nhanh chóng lấy ra cạnh có trọng số nhỏ nhất đang nối từ cây hiện tại ra ngoài.
+\end{tcolorbox}
+\end{frame}
+
+% ===================== MINH HỌA =====================
+
+\begin{frame}{\hlwhite{Minh họa trực quan}}
+\begin{columns}
+\column{0.58\textwidth}
+\begin{tikzpicture}[scale=1, every node/.style={font=\small}]
+\tikzstyle{v}=[circle,draw=myblue,thick,minimum size=8mm,fill=white]
+
+\node[v] (1) at (0,2) {1};
+\node[v] (2) at (2,3.1) {2};
+\node[v] (3) at (4,2.2) {3};
+\node[v] (4) at (0.5,0.3) {4};
+\node[v] (5) at (3.6,0.2) {5};
+
+\draw[thick,mygreen] (1)--node[left]{2} (4);
+\draw[thick,mygreen] (4)--node[below]{3} (5);
+\draw[thick,mygreen] (1)--node[above]{4} (2);
+\draw[thick,mygreen] (2)--node[above]{5} (3);
+
+\draw[thick,myred,dashed] (1)--node[above left]{6} (3);
+\draw[thick,myred,dashed] (2)--node[right]{7} (4);
+\draw[thick,myred,dashed] (3)--node[right]{8} (5);
+\draw[thick,myred,dashed] (2)--node[left]{9} (5);
+\end{tikzpicture}
+
+\column{0.42\textwidth}
+\begin{itemize}
+\item Bắt đầu từ đỉnh 1
+\item Mỗi lần chọn cạnh rẻ nhất nối ra ngoài
+\item Cạnh màu xanh là cạnh được chọn
+\item Cạnh nét đứt là cạnh chưa chọn
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% ===================== QUY TRÌNH =====================
+
+\begin{frame}{\hlwhite{Quy trình chi tiết}}
+\begin{enumerate}
+\item Chọn một đỉnh xuất phát
+\item Đưa các cạnh kề của đỉnh đó vào heap
+\item Lấy cạnh nhỏ nhất từ heap
+\item Nếu đỉnh đầu kia chưa thăm:
+\begin{itemize}
+\item thêm cạnh vào MST
+\item đánh dấu đỉnh mới
+\item đưa các cạnh kề của nó vào heap
+\end{itemize}
+\item Nếu đỉnh đó đã thăm thì bỏ qua
+\item Lặp lại đến khi có đủ $n-1$ cạnh
+\end{enumerate}
+\end{frame}
+
+% ===================== VÍ DỤ =====================
+
+\begin{frame}{\hlwhite{Ví dụ từng bước}}
+\begin{table}[]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor{blue!10}
+\textbf{Bước} & \textbf{Cạnh xét} & \textbf{Quyết định} & \textbf{Lý do} \\
+\hline
+1 & 1--4 (2) & Chọn & Nhỏ nhất từ đỉnh 1 \\
+\hline
+2 & 4--5 (3) & Chọn & Kết nối thêm đỉnh mới \\
+\hline
+3 & 1--2 (4) & Chọn & Đỉnh 2 chưa thăm \\
+\hline
+4 & 2--3 (5) & Chọn & Đỉnh 3 chưa thăm \\
+\hline
+5 & 1--3 (6) & Bỏ & Đỉnh 3 đã thuộc MST \\
+\hline
+6 & 2--4 (7) & Bỏ & Cả hai đầu đã trong MST \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Sau 4 cạnh được chọn, ta có MST cho 5 đỉnh}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== TÍNH CHẤT =====================
+
+\begin{frame}{\hlwhite{Tính chất quan trọng}}
+\begin{itemize}
+\item \hlblue{Greedy(Tham lam)}: luôn chọn cạnh tốt nhất ở thời điểm hiện tại
+\item \hlgreen{An toàn}: cạnh được chọn không làm mất tính tối ưu
+\item \hlred{Không tạo chu trình}: vì chỉ nối ra đỉnh chưa thăm
+\item Phù hợp với đồ thị có nhiều cạnh kề từ một đỉnh
+\end{itemize}
+\end{frame}
+
+% ===================== TẠI SAO ĐÚNG =====================
+
+\begin{frame}{\hlwhite{Vì sao Prim đúng?}}
+\begin{itemize}
+\item Mỗi bước chỉ chọn cạnh nhỏ nhất nối từ cây hiện tại ra ngoài
+\item Cạnh đó luôn là lựa chọn an toàn theo tính chất cắt của MST
+\item Lặp lại đủ $n-1$ lần sẽ tạo ra một cây khung nhỏ nhất
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Cốt lõi: mở rộng cây bằng cạnh nhẹ nhất có thể}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CODE 1 =====================
+
+\begin{frame}[fragile]{\hlwhite{Code C++ (1/2)}}
+\begin{lstlisting}[language=C++]
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 100005;
+vector<pair<int,long long>> adj[MAXN];
+bool visited[MAXN];
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, m;
+    cin >> n >> m;
+    for(int i = 0; i < m; i++){
+        int u, v;
+        long long w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<pair<long long,int>>> pq;
+\end{lstlisting}
+\end{frame}
+
+% ===================== CODE 2 =====================
+
+\begin{frame}[fragile]{\hlwhite{Code C++ (2/2)}}
+\begin{lstlisting}[language=C++]
+    int start = 1;
+    visited[start] = true;
+    for(auto [v, w] : adj[start]) pq.push({w, v});
+    long long mst_cost = 0;
+    int cnt = 1;
+    vector<pair<int,int>> edges;
+    while(!pq.empty() && cnt < n){
+        auto [w, u] = pq.top();
+        pq.pop();
+        if(visited[u]) continue;
+        visited[u] = true;
+        mst_cost += w;
+        cnt++;
+        for(auto [v, w2] : adj[u])
+            if(!visited[v]) pq.push({w2, v});
+    }
+    cout << mst_cost << '\n';
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== CODE CÓ TRUY VẾT =====================
+
+\begin{frame}[fragile]{\hlwhite{Code có truy vết cạnh}}
+\begin{lstlisting}[language=C++]
+#include <bits/stdc++.h>
+using namespace std;
+const int MAXN = 100005;
+vector<pair<int,long long>> adj[MAXN];
+bool visited[MAXN];
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int n, m;
+    cin >> n >> m;
+    for(int i = 0; i < m; i++){
+        int u, v;
+        long long w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    priority_queue<tuple<long long,int,int>, vector<tuple<long long,int,int>>, greater<tuple<long long,int,int>>> pq;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Code có truy vết cạnh (tiếp)}}
+\begin{lstlisting}[language=C++]
+    int start = 1;    visited[start] = true;
+    for(auto [v, w] : adj[start]) pq.push({w, start, v});
+    long long mst_cost = 0;
+    vector<tuple<int,int,long long>> mst_edges;
+    while(!pq.empty() && (int)mst_edges.size() < n - 1){
+        auto [w, u, v] = pq.top();
+        pq.pop();
+        if(visited[v]) continue;
+        visited[v] = true;
+        mst_cost += w;
+        mst_edges.push_back({u, v, w});
+        for(auto [to, w2] : adj[v])
+            if(!visited[to]) pq.push({w2, v, to});
+    }
+    cout << mst_cost << '\n';
+    for(auto [u, v, w] : mst_edges)
+        cout << u << ' ' << v << ' ' << w << '\n';
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Với heap:
+\begin{itemize}
+\item Mỗi lần push / pop: $O(\log m)$
+\item Duyệt cạnh qua danh sách kề
+\end{itemize}
+\item Tổng độ phức tạp thường dùng:
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{$O(m \log m)$} hoặc \hlred{$O(m \log n)$}
+\end{tcolorbox}
+
+\begin{itemize}
+\item Tùy cách cài đặt và biểu diễn heap
+\end{itemize}
+\end{frame}
+
+% ===================== LỖI THƯỜNG GẶP =====================
+
+\begin{frame}{\hlwhite{Lỗi thường gặp}}
+\begin{itemize}
+\item Quên đánh dấu \texttt{visited}
+\item Đẩy lại cạnh của đỉnh đã thăm gây dư thừa
+\item Không kiểm tra đồ thị liên thông
+\item Không dùng \texttt{long long} cho trọng số lớn
+\item Nhầm Prim với Dijkstra
+\end{itemize}
+\end{frame}
+
+% ===================== SO SÁNH =====================
+
+\begin{frame}{\hlwhite{So sánh với Kruskal}}
+\begin{table}[]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor{blue!10}
+\textbf{Tiêu chí} & \textbf{Prim} & \textbf{Kruskal} \\
+\hline
+Cách làm & Mở rộng từ một đỉnh & Chọn cạnh nhỏ nhất \\
+\hline
+Cấu trúc dữ liệu & Heap, visited & DSU, sort cạnh \\
+\hline
+Phù hợp & Đồ thị dày & Đồ thị thưa \\
+\hline
+Ý tưởng chính & Mở rộng cây & Gộp các thành phần \\
+\hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+% ===================== ỨNG DỤNG =====================
+
+\begin{frame}{\hlwhite{Ứng dụng thực tế}}
+\begin{itemize}
+\item Thiết kế mạng điện, mạng đường, mạng máy tính
+\item Tối ưu chi phí kết nối
+\item Bài toán quy hoạch hạ tầng
+\item Xuất hiện nhiều trong lập trình thi đấu
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT LUẬN =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Prim là thuật toán kinh điển để tìm MST
+\item Ý tưởng dễ nhớ: \hlblue{luôn mở rộng từ cây hiện tại bằng cạnh nhỏ nhất}
+\item Dùng heap giúp cài đặt hiệu quả
+\item Hiểu tốt Prim sẽ hỗ trợ rất nhiều cho các bài toán đồ thị
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Prim là một trong những thuật toán greedy nền tảng nhất trong đồ thị}
+\end{tcolorbox}
+\end{frame}
+
+\end{document}
