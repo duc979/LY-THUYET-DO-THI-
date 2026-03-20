@@ -48,9 +48,9 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 # 5. Cây và cây khung (Trees & MST)
 
 - [9. Cây, cây khung, MST](CayCayKhungMST.pdf)
-- [10. DSU (Disjoint Set Union)]
-- [11. Kruskal]
-- [12. Prim]
+- [10. DSU (Disjoint Set Union)](DSU.pdf)
+- [11. Kruskal](Kruskal.pdf)
+- [12. Prim](Prim.pdf)
 
 ---
 
