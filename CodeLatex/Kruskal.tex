@@ -1,0 +1,397 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit,shapes.geometric}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{0,180,0}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+\definecolor{codeid}{RGB}{255,140,0}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+\setbeamerfont{frametitle}{series=\bfseries}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxrule=0.8pt
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
+\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+
+% code
+\lstset{
+basicstyle=\ttfamily\small,
+backgroundcolor=\color{codebg},
+keywordstyle=\color{myblue}\bfseries,
+commentstyle=\color{mygreen}\itshape,
+stringstyle=\color{mypurple},
+identifierstyle=\color{codeid},
+numbers=left,
+numberstyle=\tiny\color{gray},
+breaklines=true,
+showstringspaces=false,
+frame=single,
+rulecolor=\color{myblue}
+}
+
+\title{\hlred{Kruskal Algorithm}}
+\author{Group 3}
+\date{\hlcyan{03/2026}}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== KHÁI NIỆM =====================
+
+\begin{frame}{\hlwhite{Định nghĩa}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Kruskal là gì?}}]
+\hlblue{Kruskal} là thuật toán tìm \hlgreen{cây khung nhỏ nhất} \hlpurple{(Minimum Spanning Tree - MST)}
+trong một đồ thị vô hướng, liên thông, có trọng số.
+\end{tcolorbox}
+
+\begin{itemize}
+\item Mục tiêu: nối tất cả các đỉnh với tổng trọng số nhỏ nhất
+\item Chọn các cạnh \hlred{nhỏ nhất trước}
+\item Không được tạo chu trình
+\end{itemize}
+\end{frame}
+
+% ===================== MST LÀ GÌ =====================
+
+\begin{frame}{\hlwhite{Cây khung nhỏ nhất là gì?}}
+\begin{itemize}
+\item \hlblue{Cây khung} là tập cạnh nối tất cả các đỉnh của đồ thị
+\item Có đúng $n-1$ cạnh nếu đồ thị có $n$ đỉnh
+\item \hlred{Không có chu trình}
+\item \hlgreen{Tổng trọng số nhỏ nhất} trong tất cả các cây khung
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Kruskal giúp ta xây dựng MST bằng cách chọn cạnh tốt nhất từng bước}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== Ý TƯỞNG =====================
+
+\begin{frame}{\hlwhite{Ý tưởng của Kruskal}}
+\begin{enumerate}
+\item Sắp xếp tất cả các cạnh theo trọng số tăng dần
+\item Duyệt từng cạnh từ nhỏ đến lớn
+\item Nếu cạnh đó \hlgreen{không tạo chu trình} thì chọn
+\item Nếu tạo chu trình thì bỏ qua
+\item Dừng khi đã chọn đủ $n-1$ cạnh
+\end{enumerate}
+
+\begin{tcolorbox}
+\centering
+\hlred{Chọn cạnh nhỏ nhất nhưng vẫn phải giữ đồ thị là một cây}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CẤU TRÚC DỮ LIỆU =====================
+
+\begin{frame}{\hlwhite{Cấu trúc dữ liệu cần dùng}}
+\begin{itemize}
+\item Danh sách cạnh
+\item Sắp xếp cạnh theo trọng số
+\item \hlblue{Disjoint Set Union (DSU) / Union-Find}
+\end{itemize}
+
+\begin{tcolorbox}[title=\textbf{\hlwhite{Vai trò của DSU}}]
+DSU dùng để kiểm tra nhanh hai đỉnh đang thuộc cùng một thành phần liên thông hay chưa.
+Nếu đã cùng thành phần, thêm cạnh vào sẽ tạo chu trình.
+\end{tcolorbox}
+\end{frame}
+
+% ===================== DSU =====================
+
+\begin{frame}{\hlwhite{Disjoint Set Union}}
+\begin{itemize}
+\item \texttt{find(x)}: tìm gốc của tập chứa đỉnh $x$
+\item \texttt{union(a,b)}: gộp hai tập lại với nhau
+\item Dùng \hlgreen{path compression} và \hlgreen{union by size/rank}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\[
+\text{Nếu } find(u) \neq find(v) \Rightarrow \text{có thể chọn cạnh } (u,v)
+\]
+\end{tcolorbox}
+\end{frame}
+
+% ===================== MINH HỌA ĐỒ THỊ =====================
+
+\begin{frame}{\hlwhite{Minh họa trực quan}}
+\begin{columns}
+\column{0.56\textwidth}
+\begin{tikzpicture}[scale=1, every node/.style={font=\small}]
+\tikzstyle{v}=[circle,draw=myblue,thick,minimum size=8mm,fill=white]
+\node[v] (1) at (0,2) {1};
+\node[v] (2) at (2,3) {2};
+\node[v] (3) at (4,2.2) {3};
+\node[v] (4) at (0.5,0.3) {4};
+\node[v] (5) at (3.5,0.2) {5};
+
+\draw[thick,mygreen] (1)--node[left]{2} (4);
+\draw[thick,mygreen] (4)--node[below]{3} (5);
+\draw[thick,mygreen] (1)--node[above]{4} (2);
+\draw[thick,mygreen] (2)--node[above]{5} (3);
+
+\draw[thick,myred,dashed] (1)--node[above left]{6} (3);
+\draw[thick,myred,dashed] (2)--node[right]{7} (4);
+\draw[thick,myred,dashed] (3)--node[right]{8} (5);
+\draw[thick,myred,dashed] (2)--node[left]{9} (5);
+\end{tikzpicture}
+
+\column{0.42\textwidth}
+\begin{itemize}
+\item Các cạnh \hlgreen{màu xanh} là cạnh được chọn
+\item Các cạnh \hlred{nét đứt} là cạnh bị loại
+\item Ta luôn xét cạnh từ nhỏ đến lớn
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% ===================== QUY TRÌNH CHI TIẾT =====================
+
+\begin{frame}{\hlwhite{Quy trình chi tiết}}
+\begin{enumerate}
+\item Khởi tạo mỗi đỉnh là một tập riêng
+\item Sắp xếp cạnh theo trọng số tăng dần
+\item Lấy cạnh nhỏ nhất chưa xét
+\item Kiểm tra hai đầu mút có thuộc cùng tập không
+\item Nếu chưa:
+\begin{itemize}
+\item thêm cạnh vào MST
+\item gộp hai tập
+\end{itemize}
+\item Nếu rồi:
+\begin{itemize}
+\item bỏ qua cạnh đó vì sẽ tạo chu trình
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+% ===================== VÍ DỤ BƯỚC TỪNG BƯỚC =====================
+
+\begin{frame}{\hlwhite{Ví dụ từng bước}}
+\begin{table}[]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\rowcolor{blue!10}
+\textbf{Cạnh} & \textbf{Trọng số} & \textbf{Quyết định} & \textbf{Lý do} \\
+\hline
+1--4 & 2 & Chọn & Chưa tạo chu trình \\
+\hline
+4--5 & 3 & Chọn & Chưa tạo chu trình \\
+\hline
+1--2 & 4 & Chọn & Chưa tạo chu trình \\
+\hline
+2--3 & 5 & Chọn & Đủ để nối thêm đỉnh \\
+\hline
+1--3 & 6 & Bỏ & Tạo chu trình \\
+\hline
+2--4 & 7 & Bỏ & Tạo chu trình \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Sau khi chọn đủ $n-1$ cạnh, ta thu được MST}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== TÍNH CHẤT =====================
+
+\begin{frame}{\hlwhite{Tính chất quan trọng}}
+\begin{itemize}
+\item \hlblue{Tham lam}: luôn chọn cạnh nhỏ nhất có thể
+\item \hlgreen{An toàn}: cạnh được chọn không làm mất khả năng tối ưu
+\item \hlred{Không tạo chu trình}: điều kiện bắt buộc
+\item Đồ thị ban đầu phải \hlorange{liên thông} để có MST
+\end{itemize}
+\end{frame}
+
+% ===================== TẠI SAO ĐÚNG =====================
+
+\begin{frame}{\hlwhite{Vì sao Kruskal đúng?}}
+\begin{itemize}
+\item Khi xét cạnh theo thứ tự tăng dần, cạnh nhỏ hơn luôn được ưu tiên
+\item Nếu cạnh nối hai thành phần khác nhau, nó không thể làm xuất hiện chu trình
+\item Việc chọn cạnh nhỏ nhất an toàn giúp tổng trọng số toàn cây là nhỏ nhất
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Ý tưởng cốt lõi: chọn cạnh nhẹ nhất mà vẫn giữ được tính cây}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== CODE =====================
+
+\begin{frame}[fragile]{\hlwhite{Code C++: Cài đặt trước}}
+\begin{lstlisting}[language=C++]
+#include <bits/stdc++.h>
+using namespace std;
+struct Edge{
+    int u, v;
+    long long w;
+};
+int n, m, parent[MAXN], sz[MAXN];
+vector<Edge> edges(m);
+const int MAXN = 100005;
+int find_set(int u){
+    if(parent[u] == u) return u;
+    return parent[u] = find_set(parent[u]);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Code C++: Hàm kiểm tra}}
+\begin{lstlisting}[language=C++]
+bool unite(int u, int v){
+    u = find_set(u);
+    v = find_set(v);
+    if(u == v) return false;
+    if(sz[u] < sz[v]) swap(u, v);
+    parent[v] = u;
+    sz[u] += sz[v];
+    return true;
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{\hlwhite{Code C++: Khai báo}}
+\begin{lstlisting}[language=C++]
+void khaibao(){
+    cin >> n >> m;
+    for(int i = 0; i < m; i++)
+        cin >> edges[i].u >> edges[i].v >> edges[i].w;
+    sort(edges.begin(), edges.end(), [](const Edge &a, const Edge &b){
+        return a.w < b.w;
+    });
+    for(int i = 1; i <= n; i++){
+        parent[i] = i;
+        sz[i] = 1;
+    }
+}
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{\hlwhite{Code C++: Trong hàm chính}}
+\begin{lstlisting}[language=C++]
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    long long mst_cost = 0;
+    vector<Edge> chosen;
+    for(auto &e : edges)
+        if(unite(e.u, e.v)){
+            mst_cost += e.w;
+            chosen.push_back(e);
+        }
+    cout << mst_cost << '\n';
+    for(auto &e : chosen)
+        cout<<e.u <<' '<<e.v<<' '<<e.w<<'\n';
+}
+\end{lstlisting}
+\end{frame}
+
+% ===================== ĐỘ PHỨC TẠP =====================
+
+\begin{frame}{\hlwhite{Độ phức tạp}}
+\begin{itemize}
+\item Sắp xếp $m$ cạnh: $O(m \log m)$
+\item DSU:
+\begin{itemize}
+\item \texttt{find}, \texttt{union} gần như $O(1)$ trung bình
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Tổng độ phức tạp: $O(m \log m)$}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== LỖI THƯỜNG GẶP =====================
+
+\begin{frame}{\hlwhite{Lỗi thường gặp}}
+\begin{itemize}
+\item Quên sắp xếp cạnh theo trọng số tăng dần
+\item Không dùng DSU nên kiểm tra chu trình chậm
+\item Không nén đường đi trong \texttt{find}
+\item Không dừng khi đã chọn đủ $n-1$ cạnh
+\item Nhầm đồ thị có hướng với đồ thị vô hướng
+\end{itemize}
+\end{frame}
+
+% ===================== ỨNG DỤNG =====================
+
+\begin{frame}{\hlwhite{Ứng dụng thực tế}}
+\begin{itemize}
+\item Thiết kế mạng điện, mạng đường, mạng máy tính
+\item Giảm chi phí kết nối các điểm
+\item Các bài toán phân cụm, tối ưu kết nối
+\item Xuất hiện rất nhiều trong lập trình thi đấu
+\end{itemize}
+\end{frame}
+
+% ===================== KẾT LUẬN =====================
+
+\begin{frame}{\hlwhite{Kết luận}}
+\begin{itemize}
+\item Kruskal là thuật toán cơ bản và rất quan trọng trong MST
+\item Ý tưởng đơn giản: \hlblue{chọn cạnh nhỏ nhất nhưng không tạo chu trình}
+\item DSU là chìa khóa để cài đặt nhanh và đúng
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{Hiểu Kruskal là hiểu một trong những thuật toán greedy kinh điển nhất}
+\end{tcolorbox}
+\end{frame}
+
+\end{document}
