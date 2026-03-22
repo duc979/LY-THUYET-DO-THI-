@@ -47,33 +47,51 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
 
 - [6. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
+- [Bài tập về DAG]
+- [Submit]
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
+- [Bài tập về Topo Sort]
+- [Submit]
 - [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
-- [Bài tập DAG]
-- [Submit DAG]
-- [Bài tập Topo Sort]
-- [Submit Topo Sort]
-- [Bài tập SCC]
-- [Submit SCC]
+- [Bài tập về SCC]
+- [Submit]
 - 
 ---
 
 # 5. Cây và cây khung (Trees & MST)
 
 - [9. Cây, cây khung, MST](FilePDF/CayCayKhungMST.pdf)
+- [Bài tập về cây]
+- [Submit]
 - [10. DSU (Disjoint Set Union)](FilePDF/DSU.pdf)
+- [Bài tập SCC]
+- [Submit]
 - [11. Kruskal](FilePDF/Kruskal.pdf)
+- [Bài tập về SCC]
+- [Submit]
 - [12. Prim](FilePDF/Prim.pdf)
+- [Bài tập về SCC]
+- [Submit]
 
 ---
 
 # 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
 - [13. Tổng quan Shortest Path và Relaxation](FilePDF/ShortestPathsNRelaxation.pdf)
+- [Bài tập về Relaxation]
+- [Submit]
 - [14. Bellman–Ford](FilePDF/BellmanFord.pdf)
+- [Bài tập về Bellman-Ford]
+- [Submit]
 - [15. Shortest Path trên DAG](FilePDF/ShortestPathDAG.pdf)
+- [Bài tập về Shortest Path trên DAG]
+- [Submit]
 - [16. Dijkstra](FilePDF/Dijkstra.pdf)
+- [Bài tập về thuật toán dijkstra]
+- [Submit]
 - [17. All-pairs Shortest Paths](FilePDF/AllpairsShortestPaths.pdf)
+- [Bài tập về All-pairs Shortest Paths]
+- [Submit]
 
 ---
 
