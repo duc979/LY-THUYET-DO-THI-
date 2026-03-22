@@ -41,8 +41,8 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [4. Thành phần liên thông](FilePDF/ThanhPhanLienThong.pdf)
 - [5. Phát hiện chu trình](FilePDF/PhatHienChuTrinh.pdf)
 - [Bài tập về bài toán liên thông và chu trình](BaiTapVeThanhPhanLienThongVaChuTrinh.pdf)
-- [Submit bài 1](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh.git)
-- [Submit bài 2](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh2.git)
+- [Submit bài 1](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh/edit/main/main.cpp)
+- [Submit bài 2](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh2/edit/main/main.cpp)
   
 ---
 
