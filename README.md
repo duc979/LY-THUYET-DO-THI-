@@ -31,6 +31,7 @@ Các thuật toán đi qua các đỉnh của đồ thị.
 - [Submit bài DFS]
 - [Bài tập về BFS]
 - [Submit bài BFS]
+  
 ---
 
 # 3. Bài toán liên thông và chu trình (Connectivity & Cycle)
@@ -42,6 +43,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [Bài tập về bài toán liên thông và chu trình]
 - [Submit bài 1]
 - [Submit bài 2]
+  
 ---
 
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
@@ -55,7 +57,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
 - [Bài tập về SCC]
 - [Submit]
-- 
+  
 ---
 
 # 5. Cây và cây khung (Trees & MST)
