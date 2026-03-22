@@ -27,7 +27,10 @@ Những kiến thức nền tảng trước khi học thuật toán.
 Các thuật toán đi qua các đỉnh của đồ thị.
 
 - [3. Thuật toán DFS và BFS](FilePDF/DuyetDoThi.pdf)
-
+- [Bài tập về DFS]
+- [Submit bài DFS]
+- [Bài tập về BFS]
+- [Submit bài BFS]
 ---
 
 # 3. Bài toán liên thông và chu trình (Connectivity & Cycle)
@@ -36,7 +39,9 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 - [4. Thành phần liên thông](FilePDF/ThanhPhanLienThong.pdf)
 - [5. Phát hiện chu trình](FilePDF/PhatHienChuTrinh.pdf)
-
+- [Bài tập về bài toán liên thông và chu trình]
+- [Submit bài 1]
+- [Submit bài 2]
 ---
 
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
@@ -44,7 +49,13 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [6. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
-
+- [Bài tập DAG]
+- [Submit DAG]
+- [Bài tập Topo Sort]
+- [Submit Topo Sort]
+- [Bài tập SCC]
+- [Submit SCC]
+- 
 ---
 
 # 5. Cây và cây khung (Trees & MST)
@@ -63,14 +74,6 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [15. Shortest Path trên DAG](FilePDF/ShortestPathDAG.pdf)
 - [16. Dijkstra](FilePDF/Dijkstra.pdf)
 - [17. All-pairs Shortest Paths](FilePDF/AllpairsShortestPaths.pdf)
-
----
-
-# 7. Bài toán luồng (Flow Algorithms)
-
-- [18. Bài toán luồng cực đại](FilePDF/MaximumFlow.pdf)
-- [19. Ford–Fulkerson](FilePDF/FordFulkerson.pdf)
-- [20. Edmonds–Karp](FilePDF/EdmondsKarp.pdf)
 
 ---
 
