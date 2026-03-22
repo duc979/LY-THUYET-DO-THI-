@@ -96,15 +96,18 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 ---
 
 # 8. Tài liệu tham khảo
-- Cơ bản về đồ thị: https://wiki.vnoi.info/algo/graph-theory/graph
+- Cơ bản về đồ thị:
+  + https://wiki.vnoi.info/algo/graph-theory/graph
 - Duyệt đồ thị:
   + https://wiki.vnoi.info/algo/graph-theory/breadth-first-search.md
   + https://wiki.vnoi.info/algo/graph-theory/Depth-First-Search-Tree.md
 - Đồ thị có hướng đặc biệt:
   + https://wiki.vnoi.info/vnoi-magazine/2023/shortest-path-dag
   + https://wiki.vnoi.info/algo/graph-theory/topological-sort.md
-- Cây và cây khung: https://wiki.vnoi.info/algo/graph-theory/minimum-spanning-tree.md
+- Cây và cây khung:
+  + https://wiki.vnoi.info/algo/graph-theory/minimum-spanning-tree.md
 - Bài toán đường đi ngắn nhất:
   + https://wiki.vnoi.info/algo/graph-theory/shortest-path
   + https://wiki.vnoi.info/algo/graph-theory/shortest-path-2
-- Bài toán luồng: https://wiki.vnoi.info/algo/graph-theory/flow
+- Bài toán luồng:
+  + https://wiki.vnoi.info/algo/graph-theory/flow
