@@ -1,0 +1,561 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% ===== MÀU =====
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{0,180,0}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{codebg}{RGB}{248,250,252}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm,
+boxsep=2pt
+}
+
+% ===== HIGHLIGHT =====
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+
+% ===== CODE STYLE =====
+\lstdefinestyle{cppstyle}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{myblue}\bfseries,
+    commentstyle=\color{mygreen},
+    stringstyle=\color{myorange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    showstringspaces=false
+}
+\lstset{style=cppstyle}
+
+\title{Các thuật toán duyệt đồ thị}
+\author{NHÓM 3}
+\date{\today}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%================================================
+\begin{frame}{Nội dung}
+\begin{enumerate}
+\item DFS
+\item Ứng dụng và tính chất DFS
+\item BFS
+\item Ứng dụng và tính chất BFS
+\end{enumerate}
+\end{frame}
+
+%================================================
+\section{DFS}
+
+\begin{frame}{DFS là gì?}
+
+\textbf{DFS (Depth First Search)} là thuật toán duyệt đồ thị theo \hlblue{chiều sâu}.
+
+\vspace{6pt}
+
+\textbf{Ví dụ trực quan (mạng bạn bè):}
+
+Giả sử bạn bắt đầu từ \hlred{bạn A}
+
+\begin{itemize}
+\item Bạn chọn 1 người bạn của A để đi tiếp
+\item Sau đó tiếp tục đi sâu vào bạn của người đó
+\item Tiếp tục cho đến khi không còn ai mới
+\item Khi bí → quay lại và thử nhánh khác
+\end{itemize}
+
+\vspace{6pt}
+
+\textbf{Cách DFS hoạt động:}
+\begin{itemize}
+\item Luôn đi theo \hlgreen{một nhánh sâu nhất}
+\item Khi không đi tiếp được → \hlorange{quay lui (backtrack)}
+\item Sau đó thử các nhánh khác
+\end{itemize}
+
+\end{frame}
+
+%================================================
+% DFS CODE 2 CỘT
+\begin{frame}[fragile]{DFS - Code và giải thích}
+
+\begin{columns}
+
+\column{0.55\textwidth}
+\begin{tcolorbox}
+\begin{lstlisting}[language=C++]
+vector<int> adj[1000];
+bool visited[1000];
+
+void dfs(int u){
+    visited[u] = true;
+
+    for(int v : adj[u]){
+        if(!visited[v]){
+            dfs(v);
+        }
+    }
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+\column{0.45\textwidth}
+
+\textbf{Giải thích}
+
+\begin{itemize}
+\item \hlblue{adj}: danh sách kề
+\item \hlgreen{visited}: đánh dấu
+\item \hlorange{dfs(u)}: bắt đầu tại u
+\item \hlred{visited[u]}: đã thăm
+\item \hlblue{for}: duyệt kề
+\item \hlred{if}: tránh lặp
+\item \hlpurple{dfs(v)}: đi sâu
+\end{itemize}
+
+\end{columns}
+
+\end{frame}
+
+%================================================
+\section{Minh họa DFS}
+
+\begin{frame}{DFS bước 1}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=red!40] (1) at (0,0) {1};
+\node (2) at (2,1) {2};
+\node (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Bắt đầu từ đỉnh 1
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{DFS bước 2}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=green!40] (1) at (0,0) {1};
+\node[fill=red!40] (2) at (2,1) {2};
+\node (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Đi từ 1 → 2
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{DFS bước 3}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=green!40] (1) at (0,0) {1};
+\node[fill=green!40] (2) at (2,1) {2};
+\node[fill=red!40] (4) at (4,1) {4};
+\node (3) at (2,-1) {3};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Đi sâu: 1 → 2 → 4
+\end{frame}
+
+%================================================
+\begin{frame}{Ứng dụng DFS (giải thích chi tiết)}
+
+\begin{itemize}
+
+\item \hlblue{Tìm thành phần liên thông}  
+Duyệt từ một đỉnh, tất cả các đỉnh đi tới được sẽ thuộc cùng một thành phần.  
+Lặp lại với các đỉnh chưa thăm để đếm số thành phần.
+
+\vspace{5pt}
+
+\item \hlgreen{Phát hiện chu trình}  
+Nếu trong DFS gặp lại một đỉnh đã thăm nhưng không phải cha → tồn tại chu trình.
+
+
+\vspace{5pt}
+
+\item \hlorange{Giải mê cung}  
+DFS thử từng đường đi → nếu sai thì quay lui → tìm được đường tới đích.
+
+\vspace{5pt}
+
+\item \hlred{Backtracking}  
+DFS là nền tảng cho các bài toán thử tất cả khả năng như: sinh hoán vị, tổ hợp,...
+
+\end{itemize}
+
+\end{frame}
+
+%================================================
+\begin{frame}{Tính chất của DFS}
+
+\begin{itemize}
+
+\item \hlblue{Duyệt theo chiều sâu}  
+Luôn đi sâu vào một nhánh cho đến khi không còn đỉnh chưa thăm.
+
+\vspace{5pt}
+
+\item \hlgreen{Có cơ chế quay lui (Backtracking)}  
+Khi gặp ngõ cụt → quay lại đỉnh trước đó để tiếp tục duyệt nhánh khác.
+
+\vspace{5pt}
+
+\item \hlpurple{Tạo ra cây DFS}  
+Trong quá trình duyệt, các cạnh được chọn sẽ tạo thành một cây (hoặc rừng DFS).
+
+\vspace{5pt}
+
+\item \hlorange{Phân loại cạnh}  
+Trong DFS có thể chia cạnh thành:
+\begin{itemize}
+\item Tree edge (cạnh cây)
+\item Back edge (cạnh ngược → phát hiện chu trình)
+\item Forward edge
+\item Cross edge
+\end{itemize}
+
+\vspace{5pt}
+
+\item \hlred{Độ phức tạp}  
+Thời gian chạy: O(V + E)
+
+\end{itemize}
+
+\end{frame}
+
+
+%================================================
+\begin{frame}{BFS là gì?}
+
+\textbf{BFS (Breadth First Search)} là thuật toán duyệt đồ thị theo \hlblue{chiều rộng}.
+
+\vspace{6pt}
+
+\textbf{Ví dụ trực quan (mạng bạn bè):}
+
+Giả sử bạn bắt đầu từ \hlred{bạn A}
+
+\begin{itemize}
+\item Level 0: A (bạn)
+\item Level 1: bạn trực tiếp của A
+\item Level 2: bạn của bạn A
+\item Level 3: bạn của level 2
+\end{itemize}
+
+\vspace{6pt}
+
+\textbf{Cách BFS hoạt động:}
+\begin{itemize}
+\item Duyệt hết \hlgreen{bạn gần nhất} trước
+\item Sau đó mới tới \hlorange{bạn xa hơn}
+\item Mỗi lần lan ra giống như \hlblue{sóng lan}
+\end{itemize}
+
+\end{frame}
+
+%================================================
+% BFS CODE 2 CỘT
+\begin{frame}[fragile]{BFS - Code và giải thích}
+
+\begin{columns}
+
+\column{0.55\textwidth}
+\begin{tcolorbox}
+\begin{lstlisting}[language=C++]
+void bfs(int s){
+    queue<int> q;
+
+    q.push(s);
+    visited[s] = true;
+
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+
+        for(int v : adj[u]){
+            if(!visited[v]){
+                visited[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+\end{lstlisting}
+\end{tcolorbox}
+
+\column{0.45\textwidth}
+
+\textbf{Giải thích}
+
+\begin{itemize}
+\item \hlblue{queue}: theo lớp
+\item \hlgreen{push}: thêm
+\item \hlred{pop}: lấy ra
+\item \hlpurple{visited}: tránh lặp
+\end{itemize}
+
+\end{columns}
+
+\end{frame}
+
+%================================================
+\section{Minh họa BFS}
+
+%------------------------------------------------
+\begin{frame}{BFS bước 1}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=red!40] (1) at (0,0) {1};
+\node (2) at (2,1) {2};
+\node (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Bắt đầu từ đỉnh 1
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{BFS bước 2}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=green!40] (1) at (0,0) {1};
+\node[fill=red!40] (2) at (2,1) {2};
+\node[fill=red!40] (3) at (2,-1) {3};
+\node (4) at (4,1) {4};
+\node (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Từ 1 → duyệt tất cả đỉnh kề (2, 3)
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{BFS bước 3}
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+\node[fill=green!40] (1) at (0,0) {1};
+\node[fill=green!40] (2) at (2,1) {2};
+\node[fill=green!40] (3) at (2,-1) {3};
+\node[fill=red!40] (4) at (4,1) {4};
+\node[fill=red!40] (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+\end{tikzpicture}
+\end{center}
+
+Tiếp tục duyệt level tiếp theo (4, 5)
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Kết quả BFS}
+
+\begin{center}
+\begin{tikzpicture}[node/.style={circle, draw, minimum size=8mm}]
+
+\node[fill=green!40] (1) at (0,0) {1};
+\node[fill=green!40] (2) at (2,1) {2};
+\node[fill=green!40] (3) at (2,-1) {3};
+\node[fill=green!40] (4) at (4,1) {4};
+\node[fill=orange!60] (5) at (4,-1) {5};
+
+\draw (1)--(2);
+\draw (1)--(3);
+\draw (2)--(4);
+\draw (3)--(5);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{6pt}
+
+\textbf{Thứ tự BFS:}  
+
+\[
+\hlblue{1} \rightarrow \hlblue{2} \rightarrow \hlblue{3} \rightarrow \hlblue{4} \rightarrow \hlred{5}
+\]
+
+\end{frame}
+
+
+
+%================================================
+\begin{frame}{Ứng dụng BFS (giải thích chi tiết)}
+
+\begin{itemize}
+
+\item \hlblue{Tìm đường đi ngắn nhất}  
+BFS duyệt theo từng lớp nên lần đầu đến một đỉnh chính là đường đi ngắn nhất từ nguồn.
+
+\vspace{5pt}
+
+\item \hlgreen{Duyệt theo level}  
+Các đỉnh được chia thành từng lớp theo khoảng cách từ đỉnh bắt đầu.
+
+\vspace{5pt}
+
+\item \hlpurple{Kiểm tra liên thông}  
+Nếu BFS từ một đỉnh không đi được hết tất cả các đỉnh → đồ thị không liên thông.
+
+\vspace{5pt}
+
+\item \hlorange{Giải mê cung}  
+BFS tìm được đường ra ngắn nhất trong mê cung.
+
+\end{itemize}
+
+\end{frame}
+
+%================================================
+\begin{frame}{Tính chất BFS (giải thích chi tiết)}
+
+\begin{itemize}
+
+\item \hlblue{Duyệt theo lớp (level)}  
+BFS luôn xử lý các đỉnh gần trước, sau đó mới đến các đỉnh xa hơn.
+
+\vspace{5pt}
+
+\item \hlgreen{Tìm đường đi ngắn nhất}  
+Trong đồ thị không trọng số, BFS luôn cho kết quả tối ưu về số bước đi.
+
+\vspace{5pt}
+
+\item \hlpurple{Sử dụng hàng đợi (queue)}  
+Queue đảm bảo thứ tự duyệt: vào trước → ra trước (FIFO).
+
+\vspace{5pt}
+
+\item \hlred{Độ phức tạp:}  O(V + E)
+Với V là số đỉnh, E là số cạnh.
+
+\vspace{5pt}
+
+\item \hlorange{Tạo cây BFS}  
+Trong quá trình duyệt, BFS tạo ra một cây thể hiện đường đi ngắn nhất từ nguồn.
+
+\end{itemize}
+
+\end{frame}
+
+%================================================
+\begin{frame}{So sánh DFS và BFS}
+
+\begin{tcolorbox}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{} & \textbf{\hlblue{DFS}} & \textbf{\hlgreen{BFS}} \\
+\hline
+
+Cấu trúc 
+& Stack / Đệ quy 
+& Queue \\
+\hline
+
+Chiến lược 
+& Đi \hlred{sâu} trước 
+& Theo \hlblue{lớp} \\
+\hline
+
+Thứ tự duyệt 
+& Một nhánh đến cuối 
+& Lan rộng từng mức \\
+\hline
+
+Đường đi ngắn nhất 
+& Không đảm bảo 
+& \hlgreen{Đảm bảo} \\
+\hline
+
+Ứng dụng 
+& Chu trình, topo 
+& Đường ngắn nhất \\
+\hline
+
+Độ phức tạp 
+& $O(V+E)$ 
+& $O(V+E)$ \\
+\hline
+
+\end{tabular}
+
+\end{tcolorbox}
+
+\end{frame}
+
+
+
+\end{document}
