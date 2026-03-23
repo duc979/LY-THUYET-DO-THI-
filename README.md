@@ -50,7 +50,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 - [6. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
 - [Bài tập về DAG](FilePDF/BAITAP_DAG.pdf)
-- [Submit]
+- [Submit](https://github.com/Alkyne-g/BaiTapDAG/edit/main/main.cpp)
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [Bài tập về Topo Sort](FilePDF/BAITAP_TOPO.pdf)
 - [Submit]
