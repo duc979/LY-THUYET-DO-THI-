@@ -49,7 +49,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
 
 - [6. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
-- [Bài tập về DAG]
+- [Bài tập về DAG](FilePDF/BAITAP_DAG.pdf)
 - [Submit]
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [Bài tập về Topo Sort]
