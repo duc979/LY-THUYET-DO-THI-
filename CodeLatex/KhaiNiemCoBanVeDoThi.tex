@@ -1,0 +1,208 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\usetheme{Madrid}
+\usecolortheme{dolphin}
+
+% --- màu ---
+\definecolor{myblue}{RGB}{30,144,255}
+\definecolor{mygreen}{RGB}{0,180,0}
+\definecolor{myred}{RGB}{220,20,60}
+\definecolor{mypurple}{RGB}{138,43,226}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{mycyan}{RGB}{0,206,209}
+\definecolor{codebg}{RGB}{248,250,252}
+
+\setbeamercolor{structure}{fg=myblue}
+\setbeamercolor{frametitle}{fg=white,bg=myblue}
+
+\tcbset{
+colback=blue!5,
+colframe=myblue,
+arc=3mm
+}
+
+% macros
+\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
+\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
+\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
+\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
+
+\title{\hlred{Khái niệm cơ bản về Đồ Thị}}
+\author{NHÓM 3}
+\date{\today}
+
+\usebackgroundtemplate{
+\begin{tikzpicture}
+\node[inner sep=0] at (current page.center) {
+\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
+};
+\fill[white,opacity=0.3] (current page.south west) rectangle (current page.north east);
+\end{tikzpicture}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+% ===================== ĐỊNH NGHĨA =====================
+
+\begin{frame}{\hlwhite{Đồ thị là gì?}}
+\begin{tcolorbox}[title=\textbf{\hlwhite{Định nghĩa}}]
+Đồ thị là cấu trúc gồm các \hlblue{đỉnh (vertices)} và \hlblue{cạnh (edges)} biểu diễn mối quan hệ.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{$G = (V, E)$}
+\end{tcolorbox}
+
+\begin{itemize}
+\item $V$: tập đỉnh
+\item $E$: tập cạnh
+\end{itemize}
+\end{frame}
+
+% ===================== MINH HỌA =====================
+
+\begin{frame}{\hlwhite{Ví dụ đồ thị}}
+\centering
+\begin{tikzpicture}[scale=1]
+\tikzset{v/.style={circle,draw=myblue,fill=myblue!10}}
+
+\node[v] (A) at (0,0) {A};
+\node[v] (B) at (2,0) {B};
+\node[v] (C) at (1,2) {C};
+
+\draw (A) -- (B);
+\draw (B) -- (C);
+\draw (A) -- (C);
+\end{tikzpicture}
+\end{frame}
+
+% ===================== PHÂN LOẠI =====================
+
+\begin{frame}{\hlwhite{Phân loại đồ thị}}
+\begin{itemize}
+\item \hlblue{Đồ thị vô hướng}
+\item \hlblue{Đồ thị có hướng}
+\item \hlblue{Đồ thị có trọng số}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{$(u,v) \neq (v,u)$ trong đồ thị có hướng}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== BẬC ĐỈNH =====================
+
+\begin{frame}{\hlwhite{Bậc của đỉnh}}
+\begin{itemize}
+\item Đồ thị vô hướng:
+\[
+deg(v) = \text{số cạnh nối với } v
+\]
+
+\item Đồ thị có hướng:
+\begin{itemize}
+\item In-degree
+\item Out-degree
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+% ===================== PATH & CYCLE =====================
+
+\begin{frame}{\hlwhite{Đường đi và Chu trình}}
+\begin{tcolorbox}
+\centering
+\hlpurple{$v_1 \rightarrow v_2 \rightarrow \dots \rightarrow v_k$}
+\end{tcolorbox}
+
+\begin{itemize}
+\item \hlblue{Path}: dãy các đỉnh liên tiếp
+\item \hlred{Cycle}: quay lại đỉnh ban đầu
+\end{itemize}
+\end{frame}
+
+% ===================== LIÊN THÔNG =====================
+
+\begin{frame}{\hlwhite{Tính liên thông}}
+\begin{itemize}
+\item \hlblue{Liên thông}: mọi cặp đỉnh đều có đường đi
+\item Đồ thị có hướng:
+\begin{itemize}
+\item Liên thông mạnh
+\item Liên thông yếu
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlgreen{Connected = có thể đi tới nhau}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== BIỂU DIỄN =====================
+
+\begin{frame}{\hlwhite{Biểu diễn đồ thị}}
+\begin{itemize}
+\item \hlblue{Ma trận kề}
+\item \hlblue{Danh sách kề}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{$A[i][j] = 1$ nếu có cạnh}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== ĐẶC BIỆT =====================
+
+\begin{frame}{\hlwhite{Các dạng đồ thị đặc biệt}}
+\begin{itemize}
+\item \hlblue{Cây (Tree)}
+\item \hlblue{Đồ thị đầy đủ}
+\item \hlblue{Đồ thị hai phía}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlpurple{$|E| = \frac{n(n-1)}{2}$}
+\end{tcolorbox}
+\end{frame}
+
+% ===================== KẾT =====================
+
+\begin{frame}{\hlwhite{Tổng kết}}
+\begin{itemize}
+\item Đồ thị = \hlblue{Đỉnh + Cạnh}
+\item Nền tảng cho:
+\begin{itemize}
+\item BFS
+\item DFS
+\item Dijkstra
+\end{itemize}
+\end{itemize}
+
+\begin{tcolorbox}
+\centering
+\hlred{Học đồ thị = nền tảng của thuật toán}
+\end{tcolorbox}
+\end{frame}
+
+\end{document}
