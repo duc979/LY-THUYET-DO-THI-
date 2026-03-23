@@ -27,7 +27,7 @@ Những kiến thức nền tảng trước khi học thuật toán.
 Các thuật toán đi qua các đỉnh của đồ thị.
 
 - [3. Thuật toán DFS và BFS](FilePDF/DuyetDoThi.pdf)
-- [Bài tập về DFS]
+- [Bài tập về DFS](FilePDF/BaiTap_DFS.pdf)
 - [Submit bài DFS]
 - [Bài tập về BFS](FilePDF/BaiTapBFS.pdf)
 - [Submit bài BFS]
