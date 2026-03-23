@@ -53,7 +53,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [Submit](https://github.com/Alkyne-g/BaiTapDAG/edit/main/main.cpp)
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [Bài tập về Topo Sort](FilePDF/BAITAP_TOPO.pdf)
-- [Submit]
+- [Submit](https://github.com/Alkyne-g/BaiTapTopo/edit/main/main.cpp)
 - [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
   
 ---
