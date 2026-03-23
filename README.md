@@ -16,7 +16,6 @@ Lộ trình học **Graph Algorithms** từ cơ bản → nâng cao.
 Những kiến thức nền tảng trước khi học thuật toán.
 
 - [1. Khái niệm cơ bản về đồ thị](FilePDF/KhaiNiemCoBanVeDoThi.pdf)
-- [2. Biểu diễn đồ thị trong máy tính](FilePDF/BieuDienDoThiMayTinh.pdf)
 - [Bài tập mở đầu](FilePDF/BaiTapCoBanVeDoThi.pdf)
 - [Submit](https://github.com/Group-3-Alkyne/graph-basics-Alkyne-g/edit/main/main.cpp)
 
@@ -26,7 +25,7 @@ Những kiến thức nền tảng trước khi học thuật toán.
 
 Các thuật toán đi qua các đỉnh của đồ thị.
 
-- [3. Thuật toán DFS và BFS](FilePDF/DuyetDoThi.pdf)
+- [2. Thuật toán DFS và BFS](FilePDF/DuyetDoThi.pdf)
 - [Bài tập về DFS](FilePDF/BaiTap_DFS.pdf)
 - [Submit bài DFS](https://github.com/Alkyne-g/BaiTapDFS/edit/main/main.cpp)
 - [Bài tập về BFS](FilePDF/BaiTapBFS.pdf)
@@ -38,8 +37,8 @@ Các thuật toán đi qua các đỉnh của đồ thị.
 
 Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
-- [4. Thành phần liên thông](FilePDF/ThanhPhanLienThong.pdf)
-- [5. Phát hiện chu trình](FilePDF/PhatHienChuTrinh.pdf)
+- [3. Thành phần liên thông](FilePDF/ThanhPhanLienThong.pdf)
+- [4. Phát hiện chu trình](FilePDF/PhatHienChuTrinh.pdf)
 - [Bài tập về bài toán liên thông và chu trình](FilePDF/BaiTapVeThanhPhanLienThongVaChuTrinh.pdf)
 - [Submit bài 1](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh/edit/main/main.cpp)
 - [Submit bài 2](https://github.com/Alkyne-g/ThanhPhanLienThongChuTrinh2/edit/main/main.cpp)
@@ -48,32 +47,32 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 
 # 4. Đồ thị có hướng đặc biệt (Directed Graph Algorithms)
 
-- [6. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
+- [5. DAG (Directed Acyclic Graph)](FilePDF/ShortestPathDAG.pdf)
 - [Bài tập về DAG](FilePDF/BAITAP_DAG.pdf)
 - [Submit](https://github.com/Alkyne-g/BaiTapDAG/edit/main/main.cpp)
-- [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
+- [6. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [Bài tập về Topo Sort](FilePDF/BAITAP_TOPO.pdf)
 - [Submit](https://github.com/Alkyne-g/BaiTapTopo/edit/main/main.cpp)
-- [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
+- [7. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
   
 ---
 
 # 5. Cây và cây khung (Trees & MST)
 
-- [9. Cây, cây khung, MST](FilePDF/CayCayKhungMST.pdf)
-- [10. DSU (Disjoint Set Union)](FilePDF/DSU.pdf)
-- [11. Kruskal](FilePDF/Kruskal.pdf)
-- [12. Prim](FilePDF/Prim.pdf)
+- [8. Cây, cây khung, MST](FilePDF/CayCayKhungMST.pdf)
+- [9. DSU (Disjoint Set Union)](FilePDF/DSU.pdf)
+- [10. Kruskal](FilePDF/Kruskal.pdf)
+- [11. Prim](FilePDF/Prim.pdf)
 
 ---
 
 # 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
-- [13. Tổng quan Shortest Path và Relaxation](FilePDF/ShortestPathsNRelaxation.pdf)
-- [14. Bellman–Ford](FilePDF/BellmanFord.pdf)
-- [15. Shortest Path trên DAG](FilePDF/ShortestPathDAG.pdf)
-- [16. Dijkstra](FilePDF/Dijkstra.pdf)
-- [17. All-pairs Shortest Paths](FilePDF/AllpairsShortestPaths.pdf)
+- [12. Tổng quan Shortest Path và Relaxation](FilePDF/ShortestPathsNRelaxation.pdf)
+- [13. Bellman–Ford](FilePDF/BellmanFord.pdf)
+- [14. Shortest Path trên DAG](FilePDF/ShortestPathDAG.pdf)
+- [15. Dijkstra](FilePDF/Dijkstra.pdf)
+- [16. All-pairs Shortest Paths](FilePDF/AllpairsShortestPaths.pdf)
 
 ---
 
