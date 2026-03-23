@@ -52,7 +52,7 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [Bài tập về DAG](FilePDF/BAITAP_DAG.pdf)
 - [Submit]
 - [7. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
-- [Bài tập về Topo Sort]
+- [Bài tập về Topo Sort](FilePDF/BAITAP_TOPO.pdf)
 - [Submit]
 - [8. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
   
