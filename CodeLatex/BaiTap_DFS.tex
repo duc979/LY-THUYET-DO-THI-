@@ -1,0 +1,125 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{listings}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large BÀI TẬP DFS}
+\end{center}
+
+\section*{TỔNG QUAN}
+\begin{tcolorbox}
+Bài toán sử dụng DFS để duyệt đồ thị và xác định thứ tự thăm các đỉnh.
+\end{tcolorbox}
+
+\begin{itemize}
+\item Không dùng thuật toán nâng cao
+\item Chỉ cần DFS cơ bản
+\item Rèn luyện kỹ năng duyệt đồ thị
+\end{itemize}
+
+\section*{ĐỀ BÀI}
+\begin{tcolorbox}
+Cho đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh.
+
+Hãy thực hiện duyệt DFS bắt đầu từ đỉnh $1$ và in ra thứ tự các đỉnh được thăm.
+\end{tcolorbox}
+
+\begin{itemize}
+\item Các đỉnh được đánh số từ $1$ đến $n$
+\item Nếu có nhiều lựa chọn, ưu tiên đỉnh có số nhỏ hơn
+\end{itemize}
+
+\section*{DỮ LIỆU VÀO}
+\begin{tcolorbox}
+Dòng đầu: $n, m$
+
+$m$ dòng tiếp theo: mỗi dòng gồm $u, v$
+\end{tcolorbox}
+
+\begin{itemize}
+\item $1 \le n \le 1000$
+\item $0 \le m \le \dfrac{n(n-1)}{2}$
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{tcolorbox}
+In ra thứ tự DFS bắt đầu từ đỉnh $1$
+\end{tcolorbox}
+
+\begin{itemize}
+\item Các đỉnh cách nhau bởi dấu cách
+\end{itemize}
+
+\section*{VÍ DỤ}
+
+\begin{tcolorbox}[title=Input]
+\begin{lstlisting}
+5 5
+1 2
+2 3
+1 4
+2 5
+4 5
+\end{lstlisting}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Output]
+\begin{lstlisting}
+1 2 3 5 4
+\end{lstlisting}
+\end{tcolorbox}
+
+\section*{GIẢI THÍCH}
+\begin{itemize}
+\item Bắt đầu từ 1 → đi 2
+\item từ 2 → đi 3
+\item quay lại → đi 5
+\item từ 5 → đi 4
+\end{itemize}
+
+\begin{tcolorbox}
+DFS luôn đi sâu trước rồi mới quay lui
+\end{tcolorbox}
+
+\section*{GỢI Ý}
+\begin{itemize}
+\item Dùng vector<int> để lưu danh sách kề
+\item Sắp xếp danh sách kề
+\item Dùng DFS đệ quy
+\item Mảng visited để tránh lặp
+\end{itemize}
+
+\begin{tcolorbox}
+Nếu không sort, thứ tự DFS sẽ khác
+\end{tcolorbox}
+
+\section*{SUBTASK}
+\begin{itemize}
+\item Subtask 1: $n \le 20$ (30\%)
+\item Subtask 2: $n \le 200$ (30\%)
+\item Subtask 3: $n \le 1000$ (40\%)
+\end{itemize}
+
+\section*{LƯU Ý}
+\begin{itemize}
+\item DFS phụ thuộc thứ tự duyệt
+\item luôn cần visited
+\item nên sort adjacency list
+\end{itemize}
+
+\begin{tcolorbox}
+Đây là bài nền tảng cực quan trọng
+\end{tcolorbox}
+
+\end{document}
