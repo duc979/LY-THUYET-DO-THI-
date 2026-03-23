@@ -91,5 +91,3 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - Bài toán đường đi ngắn nhất:
   + https://wiki.vnoi.info/algo/graph-theory/shortest-path
   + https://wiki.vnoi.info/algo/graph-theory/shortest-path-2
-- Bài toán luồng:
-  + https://wiki.vnoi.info/algo/graph-theory/flow
