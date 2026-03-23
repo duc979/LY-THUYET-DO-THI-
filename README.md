@@ -53,26 +53,20 @@ Dùng BFS/DFS để phân tích cấu trúc đồ thị.
 - [6. Sắp xếp topo](FilePDF/TopologicalSort.pdf)
 - [Bài tập về Topo Sort](FilePDF/BAITAP_TOPO.pdf)
 - [Submit](https://github.com/Alkyne-g/BaiTapTopo/edit/main/main.cpp)
-- [7. SCC (Strongly Connected Components)](FilePDF/SCC.pdf)
   
 ---
 
-# 5. Cây và cây khung (Trees & MST)
+# 5. Lý thuyết về cây và cây khung (Trees & MST)
 
 - [8. Cây, cây khung, MST](FilePDF/CayCayKhungMST.pdf)
 - [9. DSU (Disjoint Set Union)](FilePDF/DSU.pdf)
 - [10. Kruskal](FilePDF/Kruskal.pdf)
-- [11. Prim](FilePDF/Prim.pdf)
 
 ---
 
 # 6. Bài toán đường đi ngắn nhất (Shortest Path)
 
-- [12. Tổng quan Shortest Path và Relaxation](FilePDF/ShortestPathsNRelaxation.pdf)
-- [13. Bellman–Ford](FilePDF/BellmanFord.pdf)
-- [14. Shortest Path trên DAG](FilePDF/ShortestPathDAG.pdf)
 - [15. Dijkstra](FilePDF/Dijkstra.pdf)
-- [16. All-pairs Shortest Paths](FilePDF/AllpairsShortestPaths.pdf)
 
 ---
 
