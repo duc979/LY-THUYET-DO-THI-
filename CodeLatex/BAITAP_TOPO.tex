@@ -1,0 +1,57 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large SẮP XẾP TOPO}
+\end{center}
+
+\section*{ĐỀ BÀI}
+Cho một đồ thị có hướng gồm $n$ đỉnh và $m$ cạnh.
+
+Hãy in ra một thứ tự topo của đồ thị nếu tồn tại.
+
+\section*{DỮ LIỆU VÀO}
+\begin{itemize}
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số $u, v$ biểu diễn cạnh có hướng từ $u$ đến $v$
+    \item $1 \le n \le 2 \times 10^5$
+    \item $0 \le m \le 2 \times 10^5$
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{itemize}
+    \item Nếu tồn tại thứ tự topo, in ra $n$ số là thứ tự các đỉnh
+    \item Nếu không tồn tại, in ra \texttt{IMPOSSIBLE}
+\end{itemize}
+
+\section*{SAMPLE INPUT}
+\begin{tcolorbox}
+4 3 \\
+1 2 \\
+1 3 \\
+3 4
+\end{tcolorbox}
+
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
+1 3 4 2
+\end{tcolorbox}
+
+\section*{SUBTASK}
+\begin{itemize}
+    \item 50\%: $n \le 1000$
+    \item 100\%: $n \le 2 \times 10^5$
+\end{itemize}
+
+\end{document}
