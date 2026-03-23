@@ -15,7 +15,7 @@ Lộ trình học **Graph Algorithms** từ cơ bản → nâng cao.
 
 Những kiến thức nền tảng trước khi học thuật toán.
 
-- [1. Khái niệm cơ bản về đồ thị](FilePDF/KhainiemcobanveDoThi.pdf)
+- [1. Khái niệm cơ bản về đồ thị](FilePDF/KhaiNiemCoBanVeDoThi.pdf)
 - [2. Biểu diễn đồ thị trong máy tính](FilePDF/BieuDienDoThiMayTinh.pdf)
 - [Bài tập mở đầu](FilePDF/BaiTapCoBanVeDoThi.pdf)
 - [Submit](https://github.com/Group-3-Alkyne/graph-basics-Alkyne-g/edit/main/main.cpp)
