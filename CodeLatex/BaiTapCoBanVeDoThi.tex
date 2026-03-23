@@ -1,344 +1,146 @@
-\documentclass{beamer}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
-
-\usepackage{amsmath,amssymb}
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,calc,fit,shapes.geometric}
-\usepackage{listings}
-\usepackage{array}
-\usepackage{colortbl}
-\usepackage{booktabs}
-\usepackage{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
 \usepackage{tcolorbox}
 
-\usetheme{Madrid}
-\usecolortheme{dolphin}
-
-% --- màu ---
-\definecolor{myblue}{RGB}{30,144,255}
-\definecolor{mygreen}{RGB}{0,180,0}
-\definecolor{myred}{RGB}{220,20,60}
-\definecolor{mypurple}{RGB}{138,43,226}
-\definecolor{myorange}{RGB}{255,140,0}
-\definecolor{mycyan}{RGB}{0,206,209}
-\definecolor{mygray}{RGB}{90,90,90}
-\definecolor{codebg}{RGB}{248,250,252}
-\definecolor{codeid}{RGB}{255,140,0}
-
-\setbeamercolor{structure}{fg=myblue}
-\setbeamercolor{frametitle}{fg=white,bg=myblue}
-\setbeamerfont{frametitle}{series=\bfseries}
-
-\tcbset{
-colback=blue!5,
-colframe=myblue,
-arc=3mm,
-boxrule=0.8pt
-}
-
-% macros
-\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
-\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
-\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
-\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
-\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
-\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
-\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
-\newcommand{\hlgray}[1]{\textcolor{mygray}{#1}}
-
-\title{\hlred{Bài tập Graph Basics}}
-\author{Group 3}
-\date{\hlcyan{03/2026}}
-
-\IfFileExists{background.png}{
-\usebackgroundtemplate{
-\begin{tikzpicture}
-\node[inner sep=0] at (current page.center) {
-\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
-};
-\fill[white,opacity=0.28] (current page.south west) rectangle (current page.north east);
-\end{tikzpicture}
-}
-}{}
+\geometry{margin=2cm}
 
 \begin{document}
 
-\frame{\titlepage}
+\begin{center}
+    \textbf{\Large BIỂU DIỄN ĐỒ THỊ CƠ BẢN}
+\end{center}
 
-% ===================== TỔNG QUAN =====================
+\section*{ĐỀ BÀI}
 
-\begin{frame}{\hlwhite{Tổng quan bài tập}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Chủ đề}}]
-Bài tập này chỉ xoay quanh hai ý chính trong phần \hlblue{Graph Basics}:
-\begin{itemize}
-\item \hlblue{Khái niệm cơ bản về đồ thị}
-\item \hlblue{Biểu diễn đồ thị trong máy tính}
-\end{itemize}
-\end{tcolorbox}
-
-\begin{itemize}
-\item Không dùng kiến thức thuật toán nâng cao
-\item Không cần BFS, DFS, Dijkstra, Kruskal hay Prim
-\item Mục tiêu là nắm chắc cách đọc, lưu và in một đồ thị cơ bản
-\end{itemize}
-\end{frame}
-
-% ===================== MINH HỌA =====================
-
-\begin{frame}{\hlwhite{Minh họa đồ thị}}
-\begin{columns}
-\column{0.58\textwidth}
-\begin{tikzpicture}[scale=1, every node/.style={font=\small}]
-\tikzstyle{v}=[circle,draw=myblue,thick,minimum size=8mm,fill=white]
-
-\node[v] (1) at (0,2) {1};
-\node[v] (2) at (2,3) {2};
-\node[v] (3) at (4,2) {3};
-\node[v] (4) at (1,0.3) {4};
-
-\draw[thick,myblue] (1)--node[left]{ } (2);
-\draw[thick,myblue] (1)--node[above]{ } (3);
-\draw[thick,myblue] (2)--node[right]{ } (3);
-\draw[thick,myblue] (2)--node[left]{ } (4);
-\draw[thick,myblue] (3)--node[right]{ } (4);
-\end{tikzpicture}
-
-\column{0.42\textwidth}
-\begin{tcolorbox}
-\hlgreen{Trong một đồ thị cơ bản:}
-\begin{itemize}
-\item \textbf{Đỉnh}: các điểm 1,2,3,4
-\item \textbf{Cạnh}: các đường nối giữa hai đỉnh
-\item \textbf{Biểu diễn}: bằng danh sách kề hoặc ma trận kề
-\end{itemize}
-\end{tcolorbox}
-\end{columns}
-\end{frame}
-
-% ===================== ĐỀ BÀI =====================
-
-\begin{frame}{\hlwhite{Đề bài}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Bài toán: Biểu diễn đồ thị cơ bản}}]
 Cho một đồ thị vô hướng đơn gồm $n$ đỉnh và $m$ cạnh.  
-Các đỉnh được đánh số từ $1$ đến $n$.  
+Các đỉnh được đánh số từ $1$ đến $n$.
 
 Nhiệm vụ của bạn là:
 \begin{itemize}
-\item In ra \hlblue{danh sách kề} của từng đỉnh theo thứ tự tăng dần
-\item In ra \hlblue{ma trận kề} của đồ thị
+    \item In ra danh sách kề của từng đỉnh theo thứ tự tăng dần
+    \item In ra ma trận kề của đồ thị
 \end{itemize}
-\end{tcolorbox}
+
+\section*{DỮ LIỆU VÀO}
 
 \begin{itemize}
-\item Đồ thị là \hlgreen{vô hướng}
-\item Không có khuyên \hlgray{(self-loop)}
-\item Không có nhiều cạnh trùng nhau
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$
 \end{itemize}
-\end{frame}
 
-% ===================== DIỄN GIẢI YÊU CẦU =====================
+\textbf{Giới hạn:}
+\begin{itemize}
+    \item $1 \le n \le 1000$
+    \item $0 \le m \le \dfrac{n(n-1)}{2}$
+    \item $1 \le u, v \le n$
+\end{itemize}
 
-\begin{frame}{\hlwhite{Yêu cầu cần làm}}
+\section*{DỮ LIỆU RA}
+
+\begin{itemize}
+    \item In ra danh sách kề của từng đỉnh từ $1$ đến $n$
+    \item Mỗi dòng là các đỉnh kề (theo thứ tự tăng dần)
+    \item Sau đó in ra ma trận kề của đồ thị
+\end{itemize}
+
+\section*{SAMPLE INPUT}
+
 \begin{tcolorbox}
-\centering
-\hlpurple{Bài toán kiểm tra xem bạn hiểu đồ thị ở mức cơ bản hay chưa}
+4 5 \\
+1 2 \\
+1 3 \\
+2 3 \\
+2 4 \\
+3 4
 \end{tcolorbox}
 
-\begin{itemize}
-\item Với mỗi đỉnh $i$, xác định các đỉnh kề với nó
-\item Sắp xếp các đỉnh kề theo thứ tự tăng dần
-\item Từ các cạnh đã cho, dựng ma trận kề $a[i][j]$
-\end{itemize}
+\section*{SAMPLE OUTPUT}
 
 \begin{tcolorbox}
-\hlred{Nhớ rằng đồ thị vô hướng nên nếu có cạnh } $(u,v)$ \hlred{thì cả } $a[u][v]$ \hlred{và } $a[v][u]$ \hlred{đều bằng 1}
+2 3 \\
+1 3 4 \\
+1 2 4 \\
+2 3 \\
+
+0 1 1 0 \\
+1 0 1 1 \\
+1 1 0 1 \\
+0 1 1 0
 \end{tcolorbox}
-\end{frame}
 
-% ===================== DỮ LIỆU VÀO =====================
-
-\begin{frame}{\hlwhite{Dữ liệu vào}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Input}}]
-Dòng đầu tiên gồm hai số nguyên $n, m$.
-
-$m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh vô hướng nối giữa hai đỉnh $u$ và $v$.
-\end{tcolorbox}
+\section*{SUBTASK}
 
 \begin{itemize}
-\item $1 \le n \le 1000$
-\item $0 \le m \le \dfrac{n(n-1)}{2}$
-\item $1 \le u, v \le n$
-\item Các cạnh không trùng nhau
+    \item 30\%: $n \le 20,\ m \le 50$
+    \item 30\%: $n \le 200,\ m \le 2000$
+    \item 40\%: $n \le 1000$
 \end{itemize}
-\end{frame}
 
-% ===================== DỮ LIỆU RA =====================
+\section*{LỜI GIẢI}
 
-\begin{frame}{\hlwhite{Dữ liệu ra}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Output}}]
+Bài toán yêu cầu biểu diễn đồ thị dưới hai dạng cơ bản:
 \begin{itemize}
-\item In ra danh sách kề của từng đỉnh từ $1$ đến $n$
-\item Mỗi dòng ứng với một đỉnh
-\item Sau đó in ra ma trận kề của đồ thị
+    \item Danh sách kề
+    \item Ma trận kề
 \end{itemize}
-\end{tcolorbox}
 
+\subsection*{1. Danh sách kề}
+
+Ta sử dụng một mảng các vector:
+
+\[
+adj[i] = \text{danh sách các đỉnh kề với } i
+\]
+
+Với mỗi cạnh $(u, v)$:
 \begin{itemize}
-\item Danh sách kề: các đỉnh kề của một đỉnh trên cùng một dòng
-\item Ma trận kề: dòng $i$, cột $j$ bằng:
+    \item Thêm $v$ vào $adj[u]$
+    \item Thêm $u$ vào $adj[v]$
+\end{itemize}
+
+Sau khi nhập xong:
+\begin{itemize}
+    \item Sắp xếp từng $adj[i]$
+    \item In ra từng danh sách
+\end{itemize}
+
+\subsection*{2. Ma trận kề}
+
+Dùng mảng 2 chiều:
+
 \[
 a[i][j] =
 \begin{cases}
-1 & \text{nếu có cạnh nối } i \text{ và } j \\
-0 & \text{nếu không có cạnh}
+1 & \text{nếu có cạnh} \\
+0 & \text{ngược lại}
 \end{cases}
 \]
-\end{itemize}
-\end{frame}
 
-% ===================== RÀNG BUỘC =====================
+Với mỗi cạnh $(u, v)$:
+\[
+a[u][v] = a[v][u] = 1
+\]
 
-\begin{frame}{\hlwhite{Ràng buộc}}
-\begin{table}[]
-\centering
-\begin{tabular}{|c|c|}
-\hline
-\rowcolor{blue!10}
-\textbf{Giới hạn} & \textbf{Giá trị} \\
-\hline
-Số đỉnh & $1 \le n \le 1000$ \\
-\hline
-Số cạnh & $0 \le m \le \dfrac{n(n-1)}{2}$ \\
-\hline
-Loại đồ thị & Vô hướng đơn \\
-\hline
-Đỉnh & Đánh số từ $1$ đến $n$ \\
-\hline
-\end{tabular}
-\end{table}
+\subsection*{3. Độ phức tạp}
 
-\begin{tcolorbox}
-\centering
-\hlgreen{Với giới hạn này, bài toán chủ yếu kiểm tra khả năng lưu và duyệt đồ thị cơ bản}
-\end{tcolorbox}
-\end{frame}
-
-% ===================== VÍ DỤ =====================
-
-\begin{frame}[fragile]{\hlwhite{Ví dụ}}
-\begin{columns}
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Input}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-4 5
-1 2
-1 3
-2 3
-2 4
-3 4
-\end{lstlisting}
-\end{tcolorbox}
-
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Output}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-2 3
-1 3 4
-1 2 4
-2 3
-
-0 1 1 0
-1 0 1 1
-1 1 0 1
-0 1 1 0
-\end{lstlisting}
-\end{tcolorbox}
-\end{columns}
-\end{frame}
-
-% ===================== GIẢI THÍCH MẪU =====================
-
-\begin{frame}{\hlwhite{Giải thích test mẫu}}
 \begin{itemize}
-\item Đỉnh 1 kề với 2 và 3
-\item Đỉnh 2 kề với 1, 3 và 4
-\item Đỉnh 3 kề với 1, 2 và 4
-\item Đỉnh 4 kề với 2 và 3
+    \item Xây dựng: $O(m)$
+    \item Sắp xếp: $O(m \log n)$
+    \item In ma trận: $O(n^2)$
 \end{itemize}
 
-\begin{tcolorbox}
-\centering
-\hlblue{Danh sách kề được sắp tăng dần, nên thứ tự trong mỗi dòng phải đúng}
-\end{tcolorbox}
+\subsection*{4. Lưu ý}
 
-\begin{tcolorbox}
-\centering
-\hlpurple{Ma trận kề có kích thước $n \times n$, với giá trị 1 ở hai vị trí đối xứng vì đồ thị vô hướng}
-\end{tcolorbox}
-\end{frame}
-
-% ===================== GỢI Ý CÁCH LÀM =====================
-
-\begin{frame}{\hlwhite{Gợi ý cách làm}}
 \begin{itemize}
-\item Dùng \hlblue{vector<int> adj[n+1]} để lưu danh sách kề
-\item Dùng mảng \hlgreen{a[n+1][n+1]} để lưu ma trận kề
-\item Với mỗi cạnh $(u,v)$:
-\begin{itemize}
-\item thêm $v$ vào $adj[u]$
-\item thêm $u$ vào $adj[v]$
-\item gán $a[u][v] = a[v][u] = 1$
+    \item Đồ thị vô hướng → lưu hai chiều
+    \item Phải sắp xếp danh sách kề
+    \item Ma trận kề luôn đối xứng
 \end{itemize}
-\item Sau khi đọc hết input, sắp xếp từng danh sách kề
-\end{itemize}
-
-\begin{tcolorbox}
-\centering
-\hlred{Không yêu cầu thuật toán phức tạp, chỉ cần hiểu đúng cách biểu diễn đồ thị}
-\end{tcolorbox}
-\end{frame}
-
-% ===================== SUBTASK =====================
-
-\begin{frame}{\hlwhite{Subtask}}
-\begin{table}[]
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-\rowcolor{blue!10}
-\textbf{Subtask} & \textbf{Giới hạn} & \textbf{Điểm} \\
-\hline
-1 & $n \le 20,\ m \le 50$ & 30\% \\
-\hline
-2 & $n \le 200,\ m \le 2000$ & 30\% \\
-\hline
-3 & $n \le 1000,\ m \le \dfrac{n(n-1)}{2}$ & 40\% \\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{tcolorbox}
-\centering
-\hlpurple{Các subtask tăng dần theo kích thước đồ thị, giúp kiểm tra cách cài đặt cơ bản đến đầy đủ}
-\end{tcolorbox}
-\end{frame}
-
-% ===================== TÓM TẮT =====================
-
-\begin{frame}{\hlwhite{Lưu ý}}
-\begin{itemize}
-\item Bài tập này chỉ tập trung vào \hlblue{khái niệm đồ thị}
-\item Hiểu được cách lưu đồ thị bằng \hlgreen{danh sách kề} và \hlgreen{ma trận kề}
-\item Rất phù hợp để làm quen trước khi học các thuật toán đồ thị tiếp theo
-\end{itemize}
-
-\begin{tcolorbox}
-\centering
-\hlred{Nếu nắm chắc bài này, phần đồ thị cơ bản sẽ vững hơn rất nhiều}
-\end{tcolorbox}
-\end{frame}
 
 \end{document}
