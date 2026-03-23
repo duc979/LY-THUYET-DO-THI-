@@ -30,7 +30,7 @@ Các thuật toán đi qua các đỉnh của đồ thị.
 - [Bài tập về DFS](FilePDF/BaiTap_DFS.pdf)
 - [Submit bài DFS](https://github.com/Alkyne-g/BaiTapDFS/edit/main/main.cpp)
 - [Bài tập về BFS](FilePDF/BaiTapBFS.pdf)
-- [Submit bài BFS](https://github.com/Alkyne-g/BaiTapBFS.git)
+- [Submit bài BFS](https://github.com/Alkyne-g/BaiTapBFS/edit/main/main.cpp)
   
 ---
 
