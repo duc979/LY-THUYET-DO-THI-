@@ -1,0 +1,81 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large DUYỆT ĐỒ THỊ THEO BFS}
+\end{center}
+
+\section*{ĐỀ BÀI}
+Bạn có một mạng lưới các thành phố được nối với nhau bằng các con đường hai chiều.
+
+Bạn muốn bắt đầu từ một thành phố và khám phá tất cả các thành phố có thể đi tới theo cách mở rộng dần (BFS).
+
+Cho đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh. Hãy in ra thứ tự duyệt BFS bắt đầu từ đỉnh $s$.
+
+\section*{DỮ LIỆU VÀO}
+\begin{itemize}
+    \item Ba số nguyên $n, m, s$ $(1 \le n \le 10^5,\ 1 \le m \le 2 \times 10^5)$.
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ biểu diễn một cạnh giữa $u$ và $v$.
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{itemize}
+    \item In ra thứ tự các đỉnh được duyệt theo BFS bắt đầu từ đỉnh $s$.
+\end{itemize}
+
+\section*{SAMPLE INPUT}
+\begin{tcolorbox}
+5 5 1 \\
+1 2 \\
+1 3 \\
+2 4 \\
+3 5 \\
+4 5
+\end{tcolorbox}
+
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
+1 2 3 4 5
+\end{tcolorbox}
+
+\section*{SUBTASK}
+\begin{itemize}
+    \item 50\%: $n \le 1000$
+    \item 100\%: $n \le 10^5$
+\end{itemize}
+\newpage
+\section*{HƯỚNG DẪN GIẢI}
+Đây là bài toán duyệt đồ thị theo chiều rộng (BFS).
+
+\textbf{Ý tưởng:}
+\begin{itemize}
+    \item Sử dụng một hàng đợi (queue) để lưu các đỉnh cần duyệt.
+    \item Bắt đầu từ đỉnh $s$, đưa $s$ vào hàng đợi và đánh dấu đã thăm.
+    \item Lặp lại cho đến khi hàng đợi rỗng:
+    \begin{itemize}
+        \item Lấy đỉnh ở đầu hàng đợi ra và in ra.
+        \item Xét tất cả các đỉnh kề của nó.
+        \item Nếu đỉnh kề chưa được thăm, đánh dấu và đưa vào hàng đợi.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Lưu ý:}
+\begin{itemize}
+    \item Nên đánh dấu đã thăm ngay khi đưa vào hàng đợi để tránh lặp.
+    \item Có thể sắp xếp danh sách kề để đảm bảo thứ tự duyệt tăng dần.
+\end{itemize}
+
+\textbf{Độ phức tạp:} $O(n + m)$
+
+\end{document}
