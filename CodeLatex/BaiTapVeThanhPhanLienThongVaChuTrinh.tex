@@ -1,413 +1,188 @@
-\documentclass{beamer}
+\documentclass[a4paper,12pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
 \usepackage[vietnamese]{babel}
-
-\usepackage{amsmath,amssymb}
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta,calc,fit,shapes.geometric}
-\usepackage{listings}
-\usepackage{array}
-\usepackage{colortbl}
-\usepackage{booktabs}
-\usepackage{xcolor}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
 \usepackage{tcolorbox}
+\usepackage{xcolor}
 
-\usetheme{Madrid}
-\usecolortheme{dolphin}
-
-% --- màu ---
-\definecolor{myblue}{RGB}{30,144,255}
-\definecolor{mygreen}{RGB}{0,180,0}
-\definecolor{myred}{RGB}{220,20,60}
-\definecolor{mypurple}{RGB}{138,43,226}
-\definecolor{myorange}{RGB}{255,140,0}
-\definecolor{mycyan}{RGB}{0,206,209}
-\definecolor{mygray}{RGB}{90,90,90}
-\definecolor{codebg}{RGB}{248,250,252}
-\definecolor{codeid}{RGB}{255,140,0}
-
-\setbeamercolor{structure}{fg=myblue}
-\setbeamercolor{frametitle}{fg=white,bg=myblue}
-\setbeamerfont{frametitle}{series=\bfseries}
-
-\tcbset{
-colback=blue!5,
-colframe=myblue,
-arc=3mm,
-boxrule=0.8pt
-}
-
-% macros
-\newcommand{\hlblue}[1]{\textcolor{myblue}{#1}}
-\newcommand{\hlgreen}[1]{\textcolor{mygreen}{#1}}
-\newcommand{\hlred}[1]{\textcolor{myred}{#1}}
-\newcommand{\hlpurple}[1]{\textcolor{mypurple}{#1}}
-\newcommand{\hlcyan}[1]{\textcolor{mycyan}{#1}}
-\newcommand{\hlwhite}[1]{\textcolor{white}{#1}}
-\newcommand{\hlorange}[1]{\textcolor{myorange}{#1}}
-\newcommand{\hlgray}[1]{\textcolor{mygray}{#1}}
-
-\title{\hlred{Bài tập Graph Basics}}
-\author{Group 3}
-\date{\hlcyan{03/2026}}
-
-\IfFileExists{background.png}{
-\usebackgroundtemplate{
-\begin{tikzpicture}
-\node[inner sep=0] at (current page.center) {
-\includegraphics[width=\paperwidth,height=\paperheight]{background.png}
-};
-\fill[white,opacity=0.28] (current page.south west) rectangle (current page.north east);
-\end{tikzpicture}
-}
-}{}
+\geometry{margin=2cm}
 
 \begin{document}
 
-\frame{\titlepage}
+\begin{center}
+    \textbf{\Large BÀI TẬP GRAPH BASICS}
+\end{center}
 
-% ===================== TỔNG QUAN =====================
+\section*{BÀI 1: THÀNH PHẦN LIÊN THÔNG}
 
-\begin{frame}{\hlwhite{Tổng quan bài tập}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Chủ đề}}]
-Bộ bài tập này xoay quanh các kiến thức cơ bản về đồ thị:
-\begin{itemize}
-\item \hlblue{Thành phần liên thông}
-\item \hlblue{Phát hiện chu trình}
-\end{itemize}
-\end{tcolorbox}
-
-\begin{itemize}
-\item Chỉ dùng kiến thức đồ thị cơ bản
-\item Có thể giải bằng DFS hoặc BFS
-\item Không cần các thuật toán nâng cao
-\end{itemize}
-\end{frame}
-
-% ===================== MINH HỌA CHUNG =====================
-
-\begin{frame}{\hlwhite{Minh họa đồ thị}}
-\begin{columns}
-\column{0.58\textwidth}
-\begin{tikzpicture}[scale=1, every node/.style={font=\small}]
-\tikzstyle{v}=[circle,draw=myblue,thick,minimum size=8mm,fill=white]
-
-\node[v] (1) at (0,2) {1};
-\node[v] (2) at (2,3) {2};
-\node[v] (3) at (4,2) {3};
-\node[v] (4) at (1,0.3) {4};
-\node[v] (5) at (3.8,0.3) {5};
-
-\draw[thick,myblue] (1)--(2);
-\draw[thick,myblue] (2)--(3);
-\draw[thick,myblue] (3)--(1);
-\draw[thick,myblue] (4)--(5);
-\end{tikzpicture}
-
-\column{0.42\textwidth}
-\begin{tcolorbox}
-\hlgreen{Trong đồ thị cơ bản:}
-\begin{itemize}
-\item \textbf{Đỉnh}: các điểm 1,2,3,4,5
-\item \textbf{Cạnh}: các đoạn nối giữa các đỉnh
-\item \textbf{Duyệt đồ thị}: dùng DFS hoặc BFS
-\end{itemize}
-\end{tcolorbox}
-\end{columns}
-\end{frame}
-
-% =====================================================================
-% ===================== BÀI 1: THÀNH PHẦN LIÊN THÔNG =====================
-% =====================================================================
-
-\section{Thành phần liên thông}
-
-\begin{frame}{\hlwhite{Bài 1: Đề bài}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Thành phần liên thông}}]
-Cho một đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh.  
-Các đỉnh được đánh số từ $1$ đến $n$.
+\section*{ĐỀ BÀI}
+Cho một đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh. Các đỉnh được đánh số từ $1$ đến $n$.
 
 Nhiệm vụ của bạn là:
 \begin{itemize}
-\item Đếm số \hlblue{thành phần liên thông}
-\item In ra các đỉnh thuộc từng thành phần
+    \item Đếm số thành phần liên thông.
+    \item In ra các đỉnh thuộc từng thành phần.
 \end{itemize}
-\end{tcolorbox}
 
+\section*{DỮ LIỆU VÀO}
 \begin{itemize}
-\item Đồ thị là \hlgreen{vô hướng}
-\item Hai đỉnh thuộc cùng một thành phần nếu giữa chúng tồn tại đường đi
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$.
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh vô hướng nối giữa hai đỉnh $u$ và $v$.
 \end{itemize}
-\end{frame}
 
-\begin{frame}{\hlwhite{Bài 1: Dữ liệu vào}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Input}}]
-Dòng đầu tiên gồm hai số nguyên $n, m$.
-
-$m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh vô hướng nối giữa hai đỉnh $u$ và $v$.
-\end{tcolorbox}
-
+\textbf{Giới hạn:}
 \begin{itemize}
-\item $1 \le n \le 1000$
-\item $0 \le m \le \dfrac{n(n-1)}{2}$
-\item $1 \le u, v \le n$
-\item Các cạnh không trùng nhau
+    \item $1 \le n \le 1000$
+    \item $0 \le m \le \dfrac{n(n-1)}{2}$
+    \item $1 \le u, v \le n$
+    \item Các cạnh không trùng nhau
 \end{itemize}
-\end{frame}
 
-\begin{frame}{\hlwhite{Bài 1: Dữ liệu ra}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Output}}]
+\section*{DỮ LIỆU RA}
 \begin{itemize}
-\item Dòng đầu tiên: số thành phần liên thông
-\item Mỗi dòng sau: các đỉnh thuộc một thành phần liên thông
+    \item Dòng đầu tiên: số thành phần liên thông.
+    \item Mỗi dòng sau: các đỉnh thuộc một thành phần liên thông.
 \end{itemize}
-\end{tcolorbox}
 
-\begin{itemize}
-\item Các đỉnh trong cùng một thành phần nên được in theo thứ tự tăng dần
-\item Thứ tự các thành phần không bắt buộc, nhưng nên cố định theo cách duyệt
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\hlwhite{Bài 1: Ví dụ}}
-\begin{columns}
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Input}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-5 3
-1 2
-2 3
+\section*{SAMPLE INPUT}
+\begin{tcolorbox}
+5 3 \\
+1 2 \\
+2 3 \\
 4 5
-\end{lstlisting}
 \end{tcolorbox}
 
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Output}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-2
-1 2 3
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
+2 \\
+1 2 3 \\
 4 5
-\end{lstlisting}
 \end{tcolorbox}
-\end{columns}
-\end{frame}
 
-\begin{frame}{\hlwhite{Bài 1: Giải thích}}
+\section*{SUBTASK}
 \begin{itemize}
-\item Từ đỉnh 1, ta đi được đến 2 và 3 nên tạo thành một thành phần: \{1,2,3\}
-\item Từ đỉnh 4, ta đi được đến 5 nên tạo thành thành phần thứ hai: \{4,5\}
+    \item 30\%: $n \le 20$
+    \item 30\%: $n \le 200$
+    \item 40\%: $n \le 1000$
 \end{itemize}
 
+\section*{LỜI GIẢI}
+
+Ta duyệt từng đỉnh từ $1$ đến $n$. Nếu một đỉnh chưa được thăm, ta chạy DFS hoặc BFS từ đỉnh đó để lấy ra toàn bộ các đỉnh có thể đi tới từ nó. Tập các đỉnh vừa duyệt được chính là một thành phần liên thông.
+
+\subsection*{Ý tưởng}
+\begin{itemize}
+    \item Dùng mảng \texttt{visited[]} để đánh dấu đỉnh đã thăm.
+    \item Với mỗi đỉnh chưa thăm, gọi DFS/BFS để thu được một thành phần liên thông.
+    \item Lưu các đỉnh của thành phần đó vào một vector.
+\end{itemize}
+
+\subsection*{Tính đúng đắn}
+Mỗi lần gọi DFS/BFS từ một đỉnh chưa thăm, ta duyệt hết các đỉnh có thể đi tới từ đỉnh đó. Vì đồ thị vô hướng, mọi đỉnh trong cùng một thành phần liên thông đều đi tới được lẫn nhau. Do đó, mỗi lần duyệt sẽ thu được đúng một thành phần liên thông.
+
+\subsection*{Độ phức tạp}
+\begin{itemize}
+    \item Mỗi đỉnh được thăm đúng một lần.
+    \item Mỗi cạnh được xét tối đa hai lần.
+\end{itemize}
+
+Vì vậy độ phức tạp là:
+\[
+O(n + m)
+\]
+
+\subsection*{Lưu ý}
+\begin{itemize}
+    \item Nên sắp xếp các đỉnh trong mỗi thành phần theo thứ tự tăng dần.
+    \item Thứ tự các thành phần có thể phụ thuộc vào cách duyệt.
+\end{itemize}
+
+\newpage
+
+\section*{BÀI 2: PHÁT HIỆN CHU TRÌNH}
+
+\section*{ĐỀ BÀI}
+Cho một đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh. Các đỉnh được đánh số từ $1$ đến $n$.
+
+Hãy kiểm tra xem đồ thị có tồn tại chu trình hay không.
+
+\section*{DỮ LIỆU VÀO}
+\begin{itemize}
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$.
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh vô hướng nối giữa hai đỉnh $u$ và $v$.
+\end{itemize}
+
+\textbf{Giới hạn:}
+\begin{itemize}
+    \item $1 \le n \le 1000$
+    \item $0 \le m \le \dfrac{n(n-1)}{2}$
+    \item $1 \le u, v \le n$
+    \item Các cạnh không trùng nhau
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{itemize}
+    \item In ra \texttt{YES} nếu đồ thị có chu trình.
+    \item In ra \texttt{NO} nếu đồ thị không có chu trình.
+\end{itemize}
+
+\section*{SAMPLE INPUT}
 \begin{tcolorbox}
-\centering
-\hlpurple{Mỗi lần DFS/BFS từ một đỉnh chưa thăm sẽ tìm ra đúng một thành phần liên thông}
-\end{tcolorbox}
-\end{frame}
-
-\begin{frame}{\hlwhite{Bài 1: Gợi ý cách làm}}
-\begin{itemize}
-\item Dùng mảng \texttt{visited[]} để đánh dấu đỉnh đã thăm
-\item Duyệt từng đỉnh từ $1$ đến $n$
-\item Nếu đỉnh chưa thăm, chạy DFS hoặc BFS từ đỉnh đó
-\item Tập các đỉnh đã đi qua trong lần duyệt đó chính là một thành phần liên thông
-\end{itemize}
-
-\begin{tcolorbox}
-\centering
-\hlred{Bài này là ứng dụng trực tiếp của duyệt đồ thị cơ bản}
-\end{tcolorbox}
-\end{frame}
-
-\begin{frame}{\hlwhite{Bài 1: Subtask}}
-\begin{table}[]
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-\rowcolor{blue!10}
-\textbf{Subtask} & \textbf{Giới hạn} & \textbf{Điểm} \\
-\hline
-1 & $n \le 20$ & 30\% \\
-\hline
-2 & $n \le 200$ & 30\% \\
-\hline
-3 & $n \le 1000$ & 40\% \\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{tcolorbox}
-\centering
-\hlgreen{Bài toán có thể giải trong $O(n+m)$ nếu dùng DFS/BFS}
-\end{tcolorbox}
-\end{frame}
-
-% =====================================================================
-% ===================== BÀI 2: PHÁT HIỆN CHU TRÌNH =====================
-% =====================================================================
-
-\section{Phát hiện chu trình}
-
-\begin{frame}{\hlwhite{Bài 2: Đề bài}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Phát hiện chu trình}}]
-Cho một đồ thị vô hướng gồm $n$ đỉnh và $m$ cạnh.  
-Các đỉnh được đánh số từ $1$ đến $n$.
-
-Hãy kiểm tra xem đồ thị có tồn tại \hlblue{chu trình} hay không.
-\end{tcolorbox}
-
-\begin{itemize}
-\item Nếu có chu trình, in ra \hlred{\texttt{YES}}
-\item Nếu không có chu trình, in ra \hlgreen{\texttt{NO}}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{\hlwhite{Bài 2: Dữ liệu vào}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Input}}]
-Dòng đầu tiên gồm hai số nguyên $n, m$.
-
-$m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh vô hướng nối giữa hai đỉnh $u$ và $v$.
-\end{tcolorbox}
-
-\begin{itemize}
-\item $1 \le n \le 1000$
-\item $0 \le m \le \dfrac{n(n-1)}{2}$
-\item $1 \le u, v \le n$
-\item Các cạnh không trùng nhau
-\end{itemize}
-\end{frame}
-
-\begin{frame}{\hlwhite{Bài 2: Dữ liệu ra}}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Output}}]
-\begin{itemize}
-\item In ra \texttt{YES} nếu đồ thị có chu trình
-\item In ra \texttt{NO} nếu đồ thị không có chu trình
-\end{itemize}
-\end{tcolorbox}
-
-\begin{itemize}
-\item Chỉ cần xác định có tồn tại ít nhất một chu trình hay không
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{\hlwhite{Bài 2: Ví dụ}}
-\begin{columns}
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Input}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
-4 4
-1 2
-2 3
-3 1
+4 4 \\
+1 2 \\
+2 3 \\
+3 1 \\
 3 4
-\end{lstlisting}
 \end{tcolorbox}
 
-\column{0.48\textwidth}
-\begin{tcolorbox}[title=\textbf{\hlwhite{Sample Output}}]
-\begin{lstlisting}[basicstyle=\ttfamily\small]
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
 YES
-\end{lstlisting}
 \end{tcolorbox}
-\end{columns}
-\end{frame}
 
-\begin{frame}{\hlwhite{Bài 2: Giải thích}}
+\section*{SUBTASK}
 \begin{itemize}
-\item Các đỉnh 1, 2, 3 tạo thành chu trình: $1 \rightarrow 2 \rightarrow 3 \rightarrow 1$
-\item Vì tồn tại ít nhất một chu trình nên kết quả là \texttt{YES}
+    \item 30\%: $n \le 20$
+    \item 30\%: $n \le 200$
+    \item 40\%: $n \le 1000$
 \end{itemize}
 
-\begin{tcolorbox}
-\centering
-\hlpurple{Một chu trình là một đường đi khép kín, bắt đầu và kết thúc tại cùng một đỉnh}
-\end{tcolorbox}
-\end{frame}
+\section*{LỜI GIẢI}
 
-\begin{frame}{\hlwhite{Bài 2: Gợi ý cách làm}}
+Ta có thể dùng DFS để phát hiện chu trình trong đồ thị vô hướng.
+
+\subsection*{Ý tưởng}
 \begin{itemize}
-\item Dùng DFS để duyệt đồ thị
-\item Khi đi từ đỉnh $u$ sang đỉnh $v$:
-\begin{itemize}
-\item nếu $v$ chưa thăm thì tiếp tục DFS
-\item nếu $v$ đã thăm và $v$ khác đỉnh cha của $u$ thì đã phát hiện chu trình
-\end{itemize}
-\item Có thể dừng ngay khi tìm thấy chu trình đầu tiên
+    \item Duyệt từng đỉnh bằng DFS.
+    \item Khi đi từ đỉnh $u$ sang đỉnh $v$:
+    \begin{itemize}
+        \item Nếu $v$ chưa thăm thì tiếp tục DFS.
+        \item Nếu $v$ đã thăm và $v$ khác đỉnh cha của $u$ thì phát hiện chu trình.
+    \end{itemize}
 \end{itemize}
 
-\begin{tcolorbox}
-\centering
-\hlred{Với đồ thị vô hướng, phải bỏ qua cạnh quay về đỉnh cha để tránh báo chu trình sai}
-\end{tcolorbox}
-\end{frame}
+\subsection*{Tính đúng đắn}
+Trong đồ thị vô hướng, nếu khi duyệt DFS ta gặp lại một đỉnh đã thăm mà đỉnh đó không phải là cha trực tiếp của đỉnh hiện tại, điều đó có nghĩa là tồn tại một đường đi khác quay lại đỉnh cũ, tức là có chu trình.
 
-\begin{frame}{\hlwhite{Bài 2: Minh họa}}
-\begin{columns}
-\column{0.60\textwidth}
-\begin{tikzpicture}[scale=1, every node/.style={font=\small}]
-\tikzstyle{v}=[circle,draw=myblue,thick,minimum size=8mm,fill=white]
-
-\node[v] (1) at (0,2) {1};
-\node[v] (2) at (2,3) {2};
-\node[v] (3) at (4,2) {3};
-\node[v] (4) at (2,0.5) {4};
-
-\draw[thick,myred] (1)--(2);
-\draw[thick,myred] (2)--(3);
-\draw[thick,myred] (3)--(1);
-\draw[thick,myblue] (3)--(4);
-\end{tikzpicture}
-
-\column{0.40\textwidth}
-\begin{tcolorbox}
-\hlgreen{Chu trình nằm ở các đỉnh 1, 2, 3}
-\end{tcolorbox}
-
+\subsection*{Độ phức tạp}
 \begin{itemize}
-\item Cạnh 1--2
-\item Cạnh 2--3
-\item Cạnh 3--1
-\end{itemize}
-\end{columns}
-\end{frame}
-
-\begin{frame}{\hlwhite{Bài 2: Subtask}}
-\begin{table}[]
-\centering
-\begin{tabular}{|c|c|c|}
-\hline
-\rowcolor{blue!10}
-\textbf{Subtask} & \textbf{Giới hạn} & \textbf{Điểm} \\
-\hline
-1 & $n \le 20$ & 30\% \\
-\hline
-2 & $n \le 200$ & 30\% \\
-\hline
-3 & $n \le 1000$ & 40\% \\
-\hline
-\end{tabular}
-\end{table}
-
-\begin{tcolorbox}
-\centering
-\hlgreen{Có thể giải bằng DFS trong $O(n+m)$}
-\end{tcolorbox}
-\end{frame}
-
-% ===================== KẾT LUẬN =====================
-
-\begin{frame}{\hlwhite{Kết luận}}
-\begin{itemize}
-\item Bài 1: tìm các thành phần liên thông bằng DFS/BFS
-\item Bài 2: phát hiện chu trình bằng DFS
-\item Cả hai đều là bài nền tảng rất quan trọng trong đồ thị
+    \item Mỗi đỉnh được thăm tối đa một lần.
+    \item Mỗi cạnh được duyệt tối đa hai lần.
 \end{itemize}
 
-\begin{tcolorbox}
-\centering
-\hlblue{Nắm chắc hai bài này sẽ giúp học đồ thị dễ hơn rất nhiều}
-\end{tcolorbox}
-\end{frame}
+Vì vậy độ phức tạp là:
+\[
+O(n + m)
+\]
+
+\subsection*{Lưu ý}
+\begin{itemize}
+    \item Phải bỏ qua cạnh quay về đỉnh cha để tránh báo sai chu trình.
+    \item Chỉ cần tìm thấy một chu trình là có thể dừng ngay.
+\end{itemize}
 
 \end{document}
