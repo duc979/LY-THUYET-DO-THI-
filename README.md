@@ -29,7 +29,7 @@ Các thuật toán đi qua các đỉnh của đồ thị.
 - [3. Thuật toán DFS và BFS](FilePDF/DuyetDoThi.pdf)
 - [Bài tập về DFS]
 - [Submit bài DFS]
-- [Bài tập về BFS]
+- [Bài tập về BFS](FilePDF/BaiTapBFS.pdf)
 - [Submit bài BFS]
   
 ---
