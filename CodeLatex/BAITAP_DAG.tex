@@ -1,0 +1,57 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large KIỂM TRA ĐỒ THỊ DAG}
+\end{center}
+
+\section*{ĐỀ BÀI}
+Cho một đồ thị có hướng gồm $n$ đỉnh và $m$ cạnh.
+
+Hãy kiểm tra xem đồ thị có phải là DAG (đồ thị không có chu trình) hay không.
+
+\section*{DỮ LIỆU VÀO}
+\begin{itemize}
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số $u, v$ biểu diễn cạnh có hướng từ $u$ đến $v$
+    \item $1 \le n \le 2 \times 10^5$
+    \item $0 \le m \le 2 \times 10^5$
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{itemize}
+    \item In ra \texttt{YES} nếu đồ thị là DAG
+    \item Ngược lại in ra \texttt{NO}
+\end{itemize}
+
+\section*{SAMPLE INPUT}
+\begin{tcolorbox}
+4 3 \\
+1 2 \\
+2 3 \\
+3 4
+\end{tcolorbox}
+
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
+YES
+\end{tcolorbox}
+
+\section*{SUBTASK}
+\begin{itemize}
+    \item 50\%: $n \le 1000$
+    \item 100\%: $n \le 2 \times 10^5$
+\end{itemize}
+
+\end{document}
