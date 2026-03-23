@@ -1,0 +1,75 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+
+\geometry{margin=2cm}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large BIỂU DIỄN ĐỒ THỊ CƠ BẢN}
+\end{center}
+
+\section*{ĐỀ BÀI}
+Cho một đồ thị vô hướng đơn gồm $n$ đỉnh và $m$ cạnh. Các đỉnh được đánh số từ $1$ đến $n$.
+
+Hãy:
+\begin{itemize}
+    \item In ra danh sách kề của từng đỉnh theo thứ tự tăng dần
+    \item In ra ma trận kề của đồ thị
+\end{itemize}
+
+\section*{DỮ LIỆU VÀO}
+\begin{itemize}
+    \item Dòng đầu tiên gồm hai số nguyên $n, m$
+    \item $m$ dòng tiếp theo, mỗi dòng gồm hai số nguyên $u, v$ mô tả một cạnh
+    \item $1 \le n \le 1000$
+    \item $0 \le m \le \dfrac{n(n-1)}{2}$
+    \item $1 \le u, v \le n$
+    \item Các cạnh không trùng nhau
+\end{itemize}
+
+\section*{DỮ LIỆU RA}
+\begin{itemize}
+    \item In ra danh sách kề của từng đỉnh từ $1$ đến $n$
+    \item Mỗi dòng ứng với một đỉnh
+    \item Sau đó in ra ma trận kề của đồ thị
+    \item Ma trận kề $a[i][j] = 1$ nếu có cạnh nối $i, j$, ngược lại bằng $0$
+\end{itemize}
+
+\section*{SAMPLE INPUT}
+\begin{tcolorbox}
+4 5 \\
+1 2 \\
+1 3 \\
+2 3 \\
+2 4 \\
+3 4
+\end{tcolorbox}
+
+\section*{SAMPLE OUTPUT}
+\begin{tcolorbox}
+2 3 \\
+1 3 4 \\
+1 2 4 \\
+2 3 \\
+\\
+0 1 1 0 \\
+1 0 1 1 \\
+1 1 0 1 \\
+0 1 1 0 \\
+\end{tcolorbox}
+
+\section*{SUBTASK}
+\begin{itemize}
+    \item 50\%: $n \le 100$
+    \item 100\%: $n \le 1000$
+\end{itemize}
+
+\end{document}
